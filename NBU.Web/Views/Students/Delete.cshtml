@@ -1,0 +1,6 @@
+@model NBU.Data.Models.Student
+@{
+    ViewData["Title"] = "Eliminar estudiante";
+}
+<section class="page-heading"><div><a class="back-link" asp-action="Index">← Volver al directorio</a><span class="section-kicker">Módulo 01 · Estudiantes</span><h1>Eliminar estudiante</h1><p>Confirma la acción para continuar.</p></div></section>
+<section class="delete-panel"><div class="delete-icon">!</div><div><h2>¿Eliminar este expediente?</h2><p>Se eliminará el registro de <strong>@Model.FirstName @Model.LastName</strong> (@Model.StudentCode). Si tiene solicitudes o notificaciones asociadas, el sistema impedirá la eliminación para conservar el historial.</p><form asp-action="Delete" asp-route-id="@Model.Id" method="post"><a class="btn btn-outline-secondary" asp-action="Index">Cancelar</a><button type="submit" class="btn btn-danger">Eliminar estudiante</button></form></div></section>

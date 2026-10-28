@@ -1,0 +1,13 @@
+@model NBU.Data.Models.Student
+<div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+<div class="form-grid">
+    <div class="form-field"><label asp-for="StudentCode"></label><input asp-for="StudentCode" class="form-control" placeholder="Ej. NBU-2026-001" /><span asp-validation-for="StudentCode" class="field-error"></span></div>
+    <div class="form-field"><label asp-for="NationalId"></label><input asp-for="NationalId" class="form-control" placeholder="Número de cédula" /><span asp-validation-for="NationalId" class="field-error"></span></div>
+    <div class="form-field"><label asp-for="FirstName"></label><input asp-for="FirstName" class="form-control" placeholder="Nombres del estudiante" /><span asp-validation-for="FirstName" class="field-error"></span></div>
+    <div class="form-field"><label asp-for="LastName"></label><input asp-for="LastName" class="form-control" placeholder="Apellidos del estudiante" /><span asp-validation-for="LastName" class="field-error"></span></div>
+    <div class="form-field"><label asp-for="Email"></label><input asp-for="Email" class="form-control" placeholder="estudiante@universidad.edu.ni" /><span asp-validation-for="Email" class="field-error"></span></div>
+    <div class="form-field"><label asp-for="Phone"></label><input asp-for="Phone" class="form-control" placeholder="Número de teléfono" /><span asp-validation-for="Phone" class="field-error"></span></div>
+    <div class="form-field"><label asp-for="Career"></label><input asp-for="Career" class="form-control" placeholder="Carrera universitaria" /><span asp-validation-for="Career" class="field-error"></span></div>
+    <div class="form-field"><label asp-for="University"></label><input asp-for="University" class="form-control" placeholder="Universidad" /><span asp-validation-for="University" class="field-error"></span></div>
+    <div class="form-field"><label asp-for="Status"></label><select asp-for="Status" class="form-select"><option value="Active">Activo</option><option value="Inactive">Inactivo</option></select><span asp-validation-for="Status" class="field-error"></span></div>
+</div>

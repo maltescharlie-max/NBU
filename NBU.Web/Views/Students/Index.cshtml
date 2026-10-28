@@ -1,0 +1,48 @@
+@model IEnumerable<NBU.Data.Models.Student>
+@{
+    ViewData["Title"] = "Estudiantes";
+}
+
+<section class="page-heading">
+    <div><span class="section-kicker">Módulo 01</span><h1>Estudiantes</h1><p>Administra la información de los estudiantes beneficiarios.</p></div>
+    <a class="btn btn-brand" asp-action="Create"><span aria-hidden="true">＋</span> Nuevo estudiante</a>
+</section>
+
+<section class="data-panel">
+    <div class="data-toolbar">
+        <div><h2>Directorio estudiantil</h2><p>Busca por nombre, código, cédula o correo.</p></div>
+        <form asp-action="Index" method="get" class="search-form">
+            <label class="visually-hidden" for="search">Buscar estudiantes</label>
+            <input id="search" name="search" value="@ViewData["Search"]" class="form-control" placeholder="Buscar estudiante…" />
+            <button type="submit" class="btn btn-search">Buscar</button>
+        </form>
+    </div>
+    @if (!Model.Any())
+    {
+        <div class="empty-state"><span class="empty-icon">♙</span><h3>No hay estudiantes todavía</h3><p>Registra el primer estudiante para comenzar a gestionar beneficiarios.</p><a class="btn btn-brand" asp-action="Create">Registrar estudiante</a></div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table student-table align-middle">
+                <thead><tr><th>Estudiante</th><th>Código</th><th>Carrera</th><th>Universidad</th><th>Estado</th><th class="text-end">Acciones</th></tr></thead>
+                <tbody>
+                @foreach (var student in Model)
+                {
+                    <tr>
+                        <td><div class="student-cell"><span class="avatar-bubble">@student.FirstName[..1]@student.LastName[..1]</span><span><strong>@student.FirstName @student.LastName</strong><small>@student.Email</small></span></div></td>
+                        <td><span class="code-pill">@student.StudentCode</span></td>
+                        <td>@student.Career</td><td>@student.University</td>
+                        <td><span class="status-pill @(student.Status == "Active" ? "status-active" : "status-inactive")">@StudentStatus(student.Status)</span></td>
+                        <td><div class="row-actions"><a asp-action="Details" asp-route-id="@student.Id">Ver</a><a asp-action="Edit" asp-route-id="@student.Id">Editar</a><a asp-action="Delete" asp-route-id="@student.Id">Eliminar</a></div></td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    }
+</section>
+
+@functions {
+    private static string StudentStatus(string status) => status switch { "Active" => "Activo", "Inactive" => "Inactivo", _ => status };
+}

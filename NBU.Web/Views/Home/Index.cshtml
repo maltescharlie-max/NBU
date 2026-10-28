@@ -1,8 +1,55 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+@{
+    ViewData["Title"] = "Inicio";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<section class="welcome-hero">
+    <div class="hero-content">
+        <span class="eyebrow"><span class="eyebrow-star">✦</span> Nicaragua Becas Universitarias</span>
+        <h1>Tu esfuerzo<br /><span>abre oportunidades.</span></h1>
+        <p>Un espacio para acompañar el camino universitario: becas, pagos, noticias y oportunidades, en un solo lugar.</p>
+        <div class="hero-actions">
+            <a class="btn btn-brand" asp-controller="Students" asp-action="Index">Gestionar estudiantes <span aria-hidden="true">→</span></a>
+            <span class="hero-note">Tu esfuerzo abre oportunidades</span>
+        </div>
+    </div>
+    <div class="hero-visual" aria-hidden="true">
+        <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+        <div class="book-card">
+            <span class="book-star">✦</span>
+            <div class="cap"><span class="cap-board"></span><span class="cap-base"></span><span class="cap-tassel"></span></div>
+            <div class="open-book"><span></span><span></span></div>
+        </div>
+        <div class="floating-note note-top"><span>✦</span> Nuevas oportunidades</div>
+        <div class="floating-note note-bottom"><i></i> Caminos que comienzan contigo</div>
+    </div>
+</section>
+
+<section class="section-heading">
+    <div><span class="section-kicker">Tu espacio NBU</span><h2>¿Qué deseas hacer hoy?</h2></div>
+    <p>Accesos rápidos para acompañar cada etapa de la beca.</p>
+</section>
+
+<section class="quick-grid" aria-label="Accesos rápidos">
+    <a class="quick-card quick-card-primary" asp-controller="Students" asp-action="Index">
+        <span class="quick-icon icon-student">♙</span><span class="quick-arrow">↗</span>
+        <h3>Estudiantes</h3><p>Registra beneficiarios y mantén su información al día.</p><span class="card-link">Abrir módulo <b>→</b></span>
+    </a>
+    <article class="quick-card quick-card-muted">
+        <span class="quick-icon icon-scholarship">✧</span><span class="coming-soon">En preparación</span>
+        <h3>Becas y solicitudes</h3><p>Administra convocatorias y revisa cada solicitud.</p><span class="card-link">Próximamente</span>
+    </article>
+    <article class="quick-card quick-card-muted">
+        <span class="quick-icon icon-payment">↗</span><span class="coming-soon">En preparación</span>
+        <h3>Pagos</h3><p>Registra depósitos y consulta su historial.</p><span class="card-link">Próximamente</span>
+    </article>
+    <article class="quick-card quick-card-muted">
+        <span class="quick-icon icon-news">✦</span><span class="coming-soon">En preparación</span>
+        <h3>Noticias y eventos</h3><p>Comparte avisos y fechas importantes con estudiantes.</p><span class="card-link">Próximamente</span>
+    </article>
+</section>
+
+<section class="bottom-banner">
+    <span class="banner-spark" aria-hidden="true">✦</span>
+    <div><strong>Una oportunidad puede cambiar el futuro.</strong><p>NBU conecta el talento universitario con el apoyo que necesita.</p></div>
+    <span class="banner-label">Nicaragua · Educación · Futuro</span>
+</section>

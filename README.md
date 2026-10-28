@@ -28,10 +28,11 @@ Los estudiantes podrán consultar sus solicitudes, pagos, noticias, eventos y no
 ## Documentos
 
 - [Plan del proyecto y reparto inicial](docs/PLAN.md)
+- [Script SQL Server](database/NBU.sql)
 
 ## Estado
 
-Estructura inicial creada: solución .NET, proyectos web, escritorio y datos compartidos; modelo EF Core inicial agregado. Continúa la implementación de pantallas y operaciones CRUD.
+Panel web adaptable y módulo CRUD de estudiantes implementados, con búsqueda y validación de campos únicos. Se creó la migración inicial de EF Core y el script SQL Server. Las pantallas de becas, pagos y noticias, el inicio de sesión y las vistas de Windows Forms siguen pendientes.
 
 ## Ejecutar localmente
 

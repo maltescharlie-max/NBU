@@ -1,0 +1,13 @@
+@model NBU.Data.Models.Student
+@{
+    ViewData["Title"] = "Expediente del estudiante";
+}
+<section class="page-heading"><div><a class="back-link" asp-action="Index">← Volver al directorio</a><span class="section-kicker">Módulo 01 · Estudiantes</span><h1>Expediente</h1><p>Información registrada del estudiante.</p></div><a class="btn btn-brand" asp-action="Edit" asp-route-id="@Model.Id">Editar expediente</a></section>
+<section class="detail-panel">
+    <div class="detail-profile"><span class="avatar-bubble avatar-large">@Model.FirstName[..1]@Model.LastName[..1]</span><div><span class="status-pill @(Model.Status == "Active" ? "status-active" : "status-inactive")">@(Model.Status == "Active" ? "Activo" : "Inactivo")</span><h2>@Model.FirstName @Model.LastName</h2><p>@Model.StudentCode</p></div></div>
+    <dl class="detail-grid">
+        <div><dt>Cédula</dt><dd>@Model.NationalId</dd></div><div><dt>Correo electrónico</dt><dd>@Model.Email</dd></div>
+        <div><dt>Teléfono</dt><dd>@(Model.Phone ?? "No registrado")</dd></div><div><dt>Carrera</dt><dd>@Model.Career</dd></div>
+        <div><dt>Universidad</dt><dd>@Model.University</dd></div>
+    </dl>
+</section>

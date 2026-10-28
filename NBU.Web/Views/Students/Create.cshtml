@@ -1,0 +1,12 @@
+@model NBU.Data.Models.Student
+@{
+    ViewData["Title"] = "Nuevo estudiante";
+}
+<section class="page-heading"><div><a class="back-link" asp-action="Index">← Volver al directorio</a><span class="section-kicker">Módulo 01 · Estudiantes</span><h1>Registrar estudiante</h1><p>Completa la información para crear su expediente.</p></div></section>
+<section class="form-panel">
+    <form asp-action="Create" method="post">
+        <partial name="_StudentForm" model="Model" />
+        <div class="form-footer"><span>Los campos marcados son obligatorios.</span><div><a class="btn btn-outline-secondary" asp-action="Index">Cancelar</a><button type="submit" class="btn btn-brand">Guardar estudiante</button></div></div>
+    </form>
+</section>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }
