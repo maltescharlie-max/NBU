@@ -31,4 +31,10 @@ Los estudiantes podrán consultar sus solicitudes, pagos, noticias, eventos y no
 
 ## Estado
 
-Planificación aprobada. El diseño de las pantallas y el esquema inicial de datos están acordados; falta iniciar la implementación.
+Estructura inicial creada: solución .NET, proyectos web, escritorio y datos compartidos; modelo EF Core inicial agregado. Continúa la implementación de pantallas y operaciones CRUD.
+
+## Ejecutar localmente
+
+Se requiere el SDK de .NET 8 y SQL Server LocalDB (o una instancia SQL Server configurada). La cadena de conexión de desarrollo está en `NBU.Web/appsettings.json`; ajústala a la instancia disponible en cada computadora. No uses credenciales reales en archivos versionados.
+
+Abre `NBU.sln` en Visual Studio o ejecuta `dotnet run --project NBU.Web` desde la raíz del repositorio.

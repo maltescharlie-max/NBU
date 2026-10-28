@@ -1,0 +1,14 @@
+namespace NBU.Data.Models;
+
+public sealed class Notification
+{
+    public int Id { get; set; }
+    public int StudentId { get; set; }
+    public int? PublicationId { get; set; }
+    public string Message { get; set; } = string.Empty;
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public bool IsRead { get; set; }
+
+    public Student Student { get; set; } = null!;
+    public Publication? Publication { get; set; }
+}
