@@ -1,0 +1,5 @@
+@model NBU.Data.Models.ScholarshipApplication
+@{ ViewData["Title"] = "Registrar solicitud"; }
+<section class="page-heading"><div><a class="back-link" asp-action="Index">← Volver a solicitudes</a><span class="section-kicker">Módulo 02 · Solicitudes</span><h1>Registrar solicitud</h1><p>Asocia un estudiante con una convocatoria de beca.</p></div></section>
+<section class="form-panel"><form asp-action="Create" method="post"><partial name="_ApplicationForm" model="Model" /><div class="form-footer"><span>Un estudiante solo puede tener una solicitud por beca.</span><div><a class="btn btn-outline-secondary" asp-action="Index">Cancelar</a><button type="submit" class="btn btn-brand">Guardar solicitud</button></div></div></form></section>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

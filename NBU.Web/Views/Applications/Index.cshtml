@@ -1,0 +1,33 @@
+@model IEnumerable<NBU.Data.Models.ScholarshipApplication>
+@{
+    ViewData["Title"] = "Solicitudes";
+    var selectedStatus = ViewData["Status"]?.ToString() ?? "";
+}
+<section class="page-heading"><div><span class="section-kicker">Módulo 02</span><h1>Becas y solicitudes</h1><p>Revisa las solicitudes y actualiza su resultado.</p></div><a class="btn btn-brand" asp-action="Create"><span aria-hidden="true">＋</span> Registrar solicitud</a></section>
+<div class="module-switch"><a class="module-tab" asp-controller="Scholarships" asp-action="Index">Convocatorias</a><a class="module-tab active" asp-controller="Applications" asp-action="Index">Solicitudes</a></div>
+<section class="data-panel">
+    <div class="data-toolbar"><div><h2>Solicitudes recibidas</h2><p>La aceptación de una solicitud habilita el registro de sus pagos.</p></div>
+        <form asp-action="Index" method="get" class="search-form status-filter"><label for="status" class="visually-hidden">Filtrar por estado</label><select id="status" name="status" class="form-select"><option value="" selected="@(selectedStatus == "")">Todos los estados</option><option value="Pending" selected="@(selectedStatus == "Pending")">Pendientes</option><option value="Accepted" selected="@(selectedStatus == "Accepted")">Aceptadas</option><option value="Rejected" selected="@(selectedStatus == "Rejected")">Rechazadas</option></select><button type="submit" class="btn btn-search">Filtrar</button></form>
+    </div>
+    @if (!Model.Any())
+    {
+        <div class="empty-state"><span class="empty-icon">✧</span><h3>No hay solicitudes para mostrar</h3><p>Registra una solicitud para vincular a un estudiante con una convocatoria.</p><a class="btn btn-brand" asp-action="Create">Registrar solicitud</a></div>
+    }
+    else
+    {
+        <div class="table-responsive"><table class="table student-table align-middle">
+            <thead><tr><th>Estudiante</th><th>Beca</th><th>Fecha</th><th>Monto</th><th>Estado</th><th class="text-end">Acciones</th></tr></thead>
+            <tbody>@foreach (var item in Model) { <tr>
+                <td><div class="student-cell"><span class="avatar-bubble">@item.Student.FirstName[..1]@item.Student.LastName[..1]</span><span><strong>@item.Student.FirstName @item.Student.LastName</strong><small>@item.Student.StudentCode</small></span></div></td>
+                <td>@item.Scholarship.Name</td><td>@item.SubmittedAt.ToLocalTime().ToString("dd MMM yyyy")</td>
+                <td>@item.Scholarship.Amount.ToString("C2", new System.Globalization.CultureInfo("es-NI"))</td>
+                <td><span class="status-pill @ApplicationStatusClass(item.Status)">@ApplicationStatus(item.Status)</span></td>
+                <td><div class="row-actions"><a asp-action="Details" asp-route-id="@item.Id">Ver</a><a asp-action="Edit" asp-route-id="@item.Id">Revisar</a><a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a></div></td>
+            </tr> }</tbody>
+        </table></div>
+    }
+</section>
+@functions {
+    private static string ApplicationStatus(string status) => status switch { "Pending" => "Pendiente", "Accepted" => "Aceptada", "Rejected" => "Rechazada", _ => status };
+    private static string ApplicationStatusClass(string status) => status switch { "Pending" => "status-pending", "Accepted" => "status-active", _ => "status-inactive" };
+}

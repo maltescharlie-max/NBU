@@ -33,6 +33,7 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
         modelBuilder.Entity<ScholarshipApplication>(entity =>
         {
             entity.Property(application => application.Status).HasMaxLength(30);
+            entity.HasIndex(application => new { application.StudentId, application.ScholarshipId }).IsUnique();
             entity.HasOne(application => application.Student)
                 .WithMany(student => student.Applications)
                 .HasForeignKey(application => application.StudentId)

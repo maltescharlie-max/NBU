@@ -1,0 +1,8 @@
+@model NBU.Data.Models.ScholarshipApplication
+<div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+<div class="form-grid">
+    <div class="form-field full-field"><label asp-for="StudentId"></label><select asp-for="StudentId" asp-items="ViewBag.Students" class="form-select"><option value="0">Selecciona un estudiante</option></select><span asp-validation-for="StudentId" class="field-error"></span></div>
+    <div class="form-field full-field"><label asp-for="ScholarshipId"></label><select asp-for="ScholarshipId" asp-items="ViewBag.Scholarships" class="form-select"><option value="0">Selecciona una beca</option></select><span asp-validation-for="ScholarshipId" class="field-error"></span></div>
+    <div class="form-field"><label asp-for="Status"></label><select asp-for="Status" class="form-select"><option value="Pending">Pendiente</option><option value="Accepted">Aceptada</option><option value="Rejected">Rechazada</option></select><span asp-validation-for="Status" class="field-error"></span></div>
+    <div class="form-field full-field"><label asp-for="Observations"></label><textarea asp-for="Observations" class="form-control" rows="4" placeholder="Notas de la revisión, documentos pendientes o motivo de la decisión"></textarea><span asp-validation-for="Observations" class="field-error"></span></div>
+</div>

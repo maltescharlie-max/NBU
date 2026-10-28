@@ -1,0 +1,5 @@
+@model NBU.Data.Models.ScholarshipApplication
+@{ ViewData["Title"] = "Revisar solicitud"; }
+<section class="page-heading"><div><a class="back-link" asp-action="Index">← Volver a solicitudes</a><span class="section-kicker">Módulo 02 · Solicitudes</span><h1>Revisar solicitud</h1><p>Confirma el estado y anota el resultado de la revisión.</p></div></section>
+<section class="form-panel"><form asp-action="Edit" asp-route-id="@Model.Id" method="post"><input type="hidden" asp-for="Id" /><partial name="_ApplicationForm" model="Model" /><div class="form-footer"><span>Solo solicitudes aceptadas pueden recibir pagos.</span><div><a class="btn btn-outline-secondary" asp-action="Index">Cancelar</a><button type="submit" class="btn btn-brand">Guardar decisión</button></div></div></form></section>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

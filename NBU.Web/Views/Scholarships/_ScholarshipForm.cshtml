@@ -1,0 +1,11 @@
+@model NBU.Data.Models.Scholarship
+<div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+<div class="form-grid">
+    <div class="form-field full-field"><label asp-for="Name"></label><input asp-for="Name" class="form-control" placeholder="Ej. Beca Excelencia Académica" /><span asp-validation-for="Name" class="field-error"></span></div>
+    <div class="form-field"><label asp-for="Amount"></label><div class="input-group"><span class="input-group-text">C$</span><input asp-for="Amount" class="form-control" type="number" step="0.01" min="0.01" placeholder="0.00" /></div><span asp-validation-for="Amount" class="field-error"></span></div>
+    <div class="form-field"><label asp-for="Status"></label><select asp-for="Status" class="form-select"><option value="Open">Abierta</option><option value="Closed">Cerrada</option><option value="Draft">Borrador</option></select><span asp-validation-for="Status" class="field-error"></span></div>
+    <div class="form-field"><label asp-for="StartDate"></label><input asp-for="StartDate" class="form-control" type="date" /><span asp-validation-for="StartDate" class="field-error"></span></div>
+    <div class="form-field"><label asp-for="EndDate"></label><input asp-for="EndDate" class="form-control" type="date" /><span asp-validation-for="EndDate" class="field-error"></span></div>
+    <div class="form-field full-field"><label asp-for="Description"></label><textarea asp-for="Description" class="form-control" rows="3" placeholder="Describe el propósito y beneficios de la beca"></textarea><span asp-validation-for="Description" class="field-error"></span></div>
+    <div class="form-field full-field"><label asp-for="Requirements"></label><textarea asp-for="Requirements" class="form-control" rows="4" placeholder="Indica los requisitos que deben cumplir los estudiantes"></textarea><span asp-validation-for="Requirements" class="field-error"></span></div>
+</div>

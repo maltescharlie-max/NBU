@@ -1,0 +1,29 @@
+@model IEnumerable<NBU.Data.Models.Scholarship>
+@{
+    ViewData["Title"] = "Becas";
+}
+<section class="page-heading"><div><span class="section-kicker">Módulo 02</span><h1>Becas y solicitudes</h1><p>Publica convocatorias y administra las solicitudes estudiantiles.</p></div><a class="btn btn-brand" asp-action="Create"><span aria-hidden="true">＋</span> Nueva beca</a></section>
+<div class="module-switch"><a class="module-tab active" asp-controller="Scholarships" asp-action="Index">Convocatorias</a><a class="module-tab" asp-controller="Applications" asp-action="Index">Solicitudes</a></div>
+<section class="data-panel">
+    <div class="data-toolbar"><div><h2>Convocatorias</h2><p>Consulta y administra las becas disponibles.</p></div>
+        <form asp-action="Index" method="get" class="search-form"><label class="visually-hidden" for="search">Buscar becas</label><input id="search" name="search" value="@ViewData["Search"]" class="form-control" placeholder="Buscar beca…" /><button type="submit" class="btn btn-search">Buscar</button></form>
+    </div>
+    @if (!Model.Any())
+    {
+        <div class="empty-state"><span class="empty-icon">✧</span><h3>Aún no hay convocatorias</h3><p>Crea una beca para comenzar a recibir solicitudes.</p><a class="btn btn-brand" asp-action="Create">Crear primera beca</a></div>
+    }
+    else
+    {
+        <div class="scholarship-grid">
+        @foreach (var item in Model)
+        {
+            <article class="scholarship-card">
+                <div class="scholarship-card-top"><span class="quick-icon icon-scholarship">✧</span><span class="status-pill @(item.Status == "Open" ? "status-active" : "status-inactive")">@(item.Status == "Open" ? "Abierta" : item.Status == "Closed" ? "Cerrada" : item.Status)</span></div>
+                <h3>@item.Name</h3><p class="scholarship-description">@item.Description</p>
+                <div class="scholarship-meta"><span><small>Monto</small><strong>@item.Amount.ToString("C2", new System.Globalization.CultureInfo("es-NI"))</strong></span><span><small>Solicitudes</small><strong>@item.Applications.Count</strong></span><span><small>Cierre</small><strong>@item.EndDate.ToString("dd MMM yyyy")</strong></span></div>
+                <div class="scholarship-actions"><a asp-action="Details" asp-route-id="@item.Id">Ver detalles</a><a asp-action="Edit" asp-route-id="@item.Id">Editar</a><a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a></div>
+            </article>
+        }
+        </div>
+    }
+</section>

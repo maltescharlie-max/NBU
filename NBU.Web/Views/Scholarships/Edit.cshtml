@@ -1,0 +1,5 @@
+@model NBU.Data.Models.Scholarship
+@{ ViewData["Title"] = "Editar beca"; }
+<section class="page-heading"><div><a class="back-link" asp-action="Index">← Volver a becas</a><span class="section-kicker">Módulo 02 · Convocatorias</span><h1>Editar beca</h1><p>Actualiza la convocatoria @Model.Name.</p></div></section>
+<section class="form-panel"><form asp-action="Edit" asp-route-id="@Model.Id" method="post"><input type="hidden" asp-for="Id" /><partial name="_ScholarshipForm" model="Model" /><div class="form-footer"><span>Verifica los cambios antes de guardar.</span><div><a class="btn btn-outline-secondary" asp-action="Index">Cancelar</a><button type="submit" class="btn btn-brand">Guardar cambios</button></div></div></form></section>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

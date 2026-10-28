@@ -33,6 +33,9 @@ public sealed class Student
     [Display(Name = "Estado")]
     public string Status { get; set; } = "Active";
 
+    [System.ComponentModel.DataAnnotations.Schema.NotMapped]
+    public string FullName => $"{FirstName} {LastName} ({StudentCode})";
+
     public ICollection<ScholarshipApplication> Applications { get; set; } = new List<ScholarshipApplication>();
     public ICollection<Notification> Notifications { get; set; } = new List<Notification>();
 }

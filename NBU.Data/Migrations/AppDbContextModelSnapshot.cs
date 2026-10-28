@@ -137,18 +137,21 @@ namespace NBU.Data.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
 
                     b.Property<DateOnly>("EndDate")
                         .HasColumnType("date");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(120)
+                        .HasColumnType("nvarchar(120)");
 
                     b.Property<string>("Requirements")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
 
                     b.Property<DateOnly>("StartDate")
                         .HasColumnType("date");
@@ -172,7 +175,8 @@ namespace NBU.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Observations")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<int>("ScholarshipId")
                         .HasColumnType("int");
@@ -192,7 +196,8 @@ namespace NBU.Data.Migrations
 
                     b.HasIndex("ScholarshipId");
 
-                    b.HasIndex("StudentId");
+                    b.HasIndex("StudentId", "ScholarshipId")
+                        .IsUnique();
 
                     b.ToTable("ScholarshipApplications");
                 });

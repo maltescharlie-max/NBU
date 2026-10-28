@@ -1,0 +1,5 @@
+@model NBU.Data.Models.Scholarship
+@{ ViewData["Title"] = "Crear beca"; }
+<section class="page-heading"><div><a class="back-link" asp-action="Index">← Volver a becas</a><span class="section-kicker">Módulo 02 · Convocatorias</span><h1>Nueva beca</h1><p>Completa los datos de la convocatoria.</p></div></section>
+<section class="form-panel"><form asp-action="Create" method="post"><partial name="_ScholarshipForm" model="Model" /><div class="form-footer"><span>Verifica las fechas y requisitos antes de publicar.</span><div><a class="btn btn-outline-secondary" asp-action="Index">Cancelar</a><button type="submit" class="btn btn-brand">Guardar beca</button></div></div></form></section>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

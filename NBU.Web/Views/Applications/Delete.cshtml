@@ -1,0 +1,4 @@
+@model NBU.Data.Models.ScholarshipApplication
+@{ ViewData["Title"] = "Eliminar solicitud"; }
+<section class="page-heading"><div><a class="back-link" asp-action="Index">← Volver a solicitudes</a><span class="section-kicker">Módulo 02 · Solicitudes</span><h1>Eliminar solicitud</h1><p>Confirma la acción para continuar.</p></div></section>
+<section class="delete-panel"><div class="delete-icon">!</div><div><h2>¿Eliminar esta solicitud?</h2><p>Se eliminará la solicitud de <strong>@Model.Student.FirstName @Model.Student.LastName</strong> para la beca <strong>@Model.Scholarship.Name</strong>. Si tiene pagos asociados, el sistema protegerá el historial.</p><form asp-action="Delete" asp-route-id="@Model.Id" method="post"><a class="btn btn-outline-secondary" asp-action="Index">Cancelar</a><button type="submit" class="btn btn-danger">Eliminar solicitud</button></form></div></section>

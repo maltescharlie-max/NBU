@@ -1,0 +1,4 @@
+@model NBU.Data.Models.Scholarship
+@{ ViewData["Title"] = "Eliminar beca"; }
+<section class="page-heading"><div><a class="back-link" asp-action="Index">← Volver a becas</a><span class="section-kicker">Módulo 02 · Convocatorias</span><h1>Eliminar beca</h1><p>Confirma la acción para continuar.</p></div></section>
+<section class="delete-panel"><div class="delete-icon">!</div><div><h2>¿Eliminar esta convocatoria?</h2><p>Se eliminará <strong>@Model.Name</strong>. Si tiene solicitudes relacionadas, el sistema impedirá la eliminación para conservar el historial.</p><form asp-action="Delete" asp-route-id="@Model.Id" method="post"><a class="btn btn-outline-secondary" asp-action="Index">Cancelar</a><button type="submit" class="btn btn-danger">Eliminar beca</button></form></div></section>

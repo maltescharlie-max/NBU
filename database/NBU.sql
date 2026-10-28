@@ -209,3 +209,97 @@ GO
 COMMIT;
 GO
 
+BEGIN TRANSACTION;
+GO
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261028235519_UniqueStudentScholarshipApplication'
+)
+BEGIN
+    DROP INDEX [IX_ScholarshipApplications_StudentId] ON [ScholarshipApplications];
+END;
+GO
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261028235519_UniqueStudentScholarshipApplication'
+)
+BEGIN
+    DECLARE @var0 sysname;
+    SELECT @var0 = [d].[name]
+    FROM [sys].[default_constraints] [d]
+    INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+    WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Scholarships]') AND [c].[name] = N'Requirements');
+    IF @var0 IS NOT NULL EXEC(N'ALTER TABLE [Scholarships] DROP CONSTRAINT [' + @var0 + '];');
+    ALTER TABLE [Scholarships] ALTER COLUMN [Requirements] nvarchar(2000) NOT NULL;
+END;
+GO
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261028235519_UniqueStudentScholarshipApplication'
+)
+BEGIN
+    DECLARE @var1 sysname;
+    SELECT @var1 = [d].[name]
+    FROM [sys].[default_constraints] [d]
+    INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+    WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Scholarships]') AND [c].[name] = N'Name');
+    IF @var1 IS NOT NULL EXEC(N'ALTER TABLE [Scholarships] DROP CONSTRAINT [' + @var1 + '];');
+    ALTER TABLE [Scholarships] ALTER COLUMN [Name] nvarchar(120) NOT NULL;
+END;
+GO
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261028235519_UniqueStudentScholarshipApplication'
+)
+BEGIN
+    DECLARE @var2 sysname;
+    SELECT @var2 = [d].[name]
+    FROM [sys].[default_constraints] [d]
+    INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+    WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Scholarships]') AND [c].[name] = N'Description');
+    IF @var2 IS NOT NULL EXEC(N'ALTER TABLE [Scholarships] DROP CONSTRAINT [' + @var2 + '];');
+    ALTER TABLE [Scholarships] ALTER COLUMN [Description] nvarchar(2000) NOT NULL;
+END;
+GO
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261028235519_UniqueStudentScholarshipApplication'
+)
+BEGIN
+    DECLARE @var3 sysname;
+    SELECT @var3 = [d].[name]
+    FROM [sys].[default_constraints] [d]
+    INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+    WHERE ([d].[parent_object_id] = OBJECT_ID(N'[ScholarshipApplications]') AND [c].[name] = N'Observations');
+    IF @var3 IS NOT NULL EXEC(N'ALTER TABLE [ScholarshipApplications] DROP CONSTRAINT [' + @var3 + '];');
+    ALTER TABLE [ScholarshipApplications] ALTER COLUMN [Observations] nvarchar(1000) NULL;
+END;
+GO
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261028235519_UniqueStudentScholarshipApplication'
+)
+BEGIN
+    CREATE UNIQUE INDEX [IX_ScholarshipApplications_StudentId_ScholarshipId] ON [ScholarshipApplications] ([StudentId], [ScholarshipId]);
+END;
+GO
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261028235519_UniqueStudentScholarshipApplication'
+)
+BEGIN
+    INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+    VALUES (N'20261028235519_UniqueStudentScholarshipApplication', N'8.0.33');
+END;
+GO
+
+COMMIT;
+GO
+
