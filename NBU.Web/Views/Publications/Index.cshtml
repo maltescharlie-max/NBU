@@ -1,0 +1,27 @@
+@model IEnumerable<NBU.Data.Models.Publication>
+@{
+    ViewData["Title"] = "Noticias y eventos";
+    var currentType = ViewData["Type"]?.ToString() ?? "";
+}
+<section class="page-heading"><div><span class="section-kicker">Módulo 04</span><h1>Noticias y eventos</h1><p>Comparte avisos y fechas importantes con la comunidad universitaria.</p></div><a class="btn btn-brand" asp-action="Create"><span aria-hidden="true">＋</span> Nueva publicación</a></section>
+<div class="module-switch"><a class="module-tab @(currentType == "" ? "active" : "")" asp-action="Index">Todas</a><a class="module-tab @(currentType == "News" ? "active" : "")" asp-action="Index" asp-route-type="News">Noticias</a><a class="module-tab @(currentType == "Event" ? "active" : "")" asp-action="Index" asp-route-type="Event">Eventos</a><a class="module-tab @(currentType == "Announcement" ? "active" : "")" asp-action="Index" asp-route-type="Announcement">Avisos</a><a class="module-tab" asp-controller="Notifications" asp-action="Index">Notificaciones</a></div>
+<section class="data-panel">
+    <div class="data-toolbar"><div><h2>Publicaciones</h2><p>Las notificaciones se envían dentro de la plataforma.</p></div><span class="staff-chip">@Model.Count() publicación(es)</span></div>
+    @if (!Model.Any())
+    {
+        <div class="empty-state"><span class="empty-icon">✦</span><h3>No hay publicaciones todavía</h3><p>Crea una noticia, evento o aviso para mantener informados a los estudiantes.</p><a class="btn btn-brand" asp-action="Create">Crear publicación</a></div>
+    }
+    else
+    {
+        <div class="publication-list">
+        @foreach (var item in Model)
+        {
+            <article class="publication-card">
+                <div class="publication-date">@if (item.Type == "Event" && item.EventDate is not null) { <><strong>@item.EventDate.Value.ToString("dd")</strong><span>@item.EventDate.Value.ToString("MMM yyyy").ToUpperInvariant()</span></> } else { <><strong>✦</strong><span>@item.PublishedAt.ToLocalTime().ToString("dd MMM yyyy").ToUpperInvariant()</span></> }</div>
+                <div class="publication-body"><div class="publication-meta"><span class="publication-kind kind-@item.Type.ToLowerInvariant()">@PublicationType(item.Type)</span><span>@item.Notifications.Count notificación(es)</span></div><h3>@item.Title</h3><p>@item.Content</p><div class="publication-actions"><a asp-action="Details" asp-route-id="@item.Id">Leer</a><a asp-action="Edit" asp-route-id="@item.Id">Editar</a><a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a></div></div>
+            </article>
+        }
+        </div>
+    }
+</section>
+@functions { private static string PublicationType(string type) => type switch { "News" => "Noticia", "Event" => "Evento", _ => "Aviso" }; }

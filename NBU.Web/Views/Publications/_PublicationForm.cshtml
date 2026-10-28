@@ -1,0 +1,8 @@
+@model NBU.Data.Models.Publication
+<div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+<div class="form-grid">
+    <div class="form-field"><label asp-for="Type"></label><select asp-for="Type" class="form-select"><option value="News">Noticia</option><option value="Event">Evento</option><option value="Announcement">Aviso</option></select><span asp-validation-for="Type" class="field-error"></span></div>
+    <div class="form-field"><label asp-for="EventDate"></label><input asp-for="EventDate" class="form-control" type="datetime-local" /><span asp-validation-for="EventDate" class="field-error"></span><small class="form-hint">Obligatoria para eventos; opcional en otras publicaciones.</small></div>
+    <div class="form-field full-field"><label asp-for="Title"></label><input asp-for="Title" class="form-control" placeholder="Título claro para los estudiantes" /><span asp-validation-for="Title" class="field-error"></span></div>
+    <div class="form-field full-field"><label asp-for="Content"></label><textarea asp-for="Content" class="form-control" rows="7" placeholder="Escribe la noticia, detalles del evento o aviso"></textarea><span asp-validation-for="Content" class="field-error"></span></div>
+</div>

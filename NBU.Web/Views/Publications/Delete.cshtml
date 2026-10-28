@@ -1,0 +1,4 @@
+@model NBU.Data.Models.Publication
+@{ ViewData["Title"] = "Eliminar publicación"; }
+<section class="page-heading"><div><a class="back-link" asp-action="Index">← Volver a publicaciones</a><span class="section-kicker">Módulo 04 · Noticias y eventos</span><h1>Eliminar publicación</h1><p>Confirma la acción para continuar.</p></div></section>
+<section class="delete-panel"><div class="delete-icon">!</div><div><h2>¿Eliminar “@Model.Title”?</h2><p>Se eliminará esta publicación. Las notificaciones ya creadas permanecerán en el historial, pero dejarán de enlazar a este contenido.</p><form asp-action="Delete" asp-route-id="@Model.Id" method="post"><a class="btn btn-outline-secondary" asp-action="Index">Cancelar</a><button type="submit" class="btn btn-danger">Eliminar publicación</button></form></div></section>

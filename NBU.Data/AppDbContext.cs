@@ -59,10 +59,12 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
         {
             entity.Property(publication => publication.Type).HasMaxLength(30);
             entity.Property(publication => publication.Title).HasMaxLength(200);
+            entity.Property(publication => publication.Content).HasMaxLength(5000);
         });
 
         modelBuilder.Entity<Notification>(entity =>
         {
+            entity.Property(notification => notification.Message).HasMaxLength(500);
             entity.HasOne(notification => notification.Student)
                 .WithMany(student => student.Notifications)
                 .HasForeignKey(notification => notification.StudentId)

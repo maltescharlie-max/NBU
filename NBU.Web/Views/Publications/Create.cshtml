@@ -1,0 +1,5 @@
+@model NBU.Data.Models.Publication
+@{ ViewData["Title"] = "Nueva publicación"; }
+<section class="page-heading"><div><a class="back-link" asp-action="Index">← Volver a publicaciones</a><span class="section-kicker">Módulo 04 · Noticias y eventos</span><h1>Nueva publicación</h1><p>Prepara un aviso para la comunidad universitaria.</p></div></section>
+<section class="form-panel"><form asp-action="Create" method="post"><partial name="_PublicationForm" model="Model" /><label class="notify-option"><input type="checkbox" name="notifyStudents" value="true" checked /><span><strong>Notificar a estudiantes activos</strong><small>Se creará una notificación dentro de NBU para cada estudiante activo.</small></span></label><div class="form-footer"><span>La publicación aparecerá en el portal al guardarla.</span><div><a class="btn btn-outline-secondary" asp-action="Index">Cancelar</a><button type="submit" class="btn btn-brand">Publicar</button></div></div></form></section>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

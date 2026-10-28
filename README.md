@@ -32,7 +32,7 @@ Los estudiantes podrán consultar sus solicitudes, pagos, noticias, eventos y no
 
 ## Estado
 
-Panel web adaptable y módulos CRUD de estudiantes, becas, solicitudes y pagos implementados, con búsqueda, validación y control de estados. Los pagos solo pueden asociarse a solicitudes aceptadas. Se generó el esquema SQL Server. El módulo de noticias y eventos, el inicio de sesión y las vistas de Windows Forms siguen pendientes.
+Panel web adaptable y los cuatro módulos de administración implementados: estudiantes, becas y solicitudes, pagos, y noticias y eventos. Las publicaciones pueden generar notificaciones en la plataforma para estudiantes activos. Los pagos solo se asocian a solicitudes aceptadas. El inicio de sesión y las vistas de Windows Forms siguen pendientes.
 
 ## Ejecutar localmente
 
