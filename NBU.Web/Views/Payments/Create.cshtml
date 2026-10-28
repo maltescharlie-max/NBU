@@ -1,0 +1,5 @@
+@model NBU.Data.Models.Payment
+@{ ViewData["Title"] = "Registrar pago"; }
+<section class="page-heading"><div><a class="back-link" asp-action="Index">← Volver a pagos</a><span class="section-kicker">Módulo 03 · Pagos</span><h1>Registrar depósito</h1><p>Guarda el monto, período y estado del pago.</p></div></section>
+<section class="form-panel"><form asp-action="Create" method="post"><partial name="_PaymentForm" model="Model" /><div class="form-footer"><span>Los depósitos se registran en la app; no se transfieren desde aquí.</span><div><a class="btn btn-outline-secondary" asp-action="Index">Cancelar</a><button type="submit" class="btn btn-brand">Guardar pago</button></div></div></form></section>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

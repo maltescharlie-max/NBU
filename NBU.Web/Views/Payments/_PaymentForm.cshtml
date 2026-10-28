@@ -1,0 +1,9 @@
+@model NBU.Data.Models.Payment
+<div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+<div class="form-grid">
+    <div class="form-field full-field"><label asp-for="ScholarshipApplicationId"></label><select asp-for="ScholarshipApplicationId" asp-items="ViewBag.Applications" class="form-select"><option value="0">Selecciona beneficiario y beca</option></select><span asp-validation-for="ScholarshipApplicationId" class="field-error"></span></div>
+    <div class="form-field"><label asp-for="Amount"></label><div class="input-group"><span class="input-group-text">C$</span><input asp-for="Amount" class="form-control" type="number" step="0.01" min="0.01" placeholder="0.00" /></div><span asp-validation-for="Amount" class="field-error"></span></div>
+    <div class="form-field"><label asp-for="DepositDate"></label><input asp-for="DepositDate" class="form-control" type="date" /><span asp-validation-for="DepositDate" class="field-error"></span></div>
+    <div class="form-field"><label asp-for="Period"></label><input asp-for="Period" class="form-control" placeholder="Ej. Enero 2026" /><span asp-validation-for="Period" class="field-error"></span></div>
+    <div class="form-field"><label asp-for="Status"></label><select asp-for="Status" class="form-select"><option value="Pending">Pendiente</option><option value="Paid">Pagado</option><option value="Cancelled">Cancelado</option></select><span asp-validation-for="Status" class="field-error"></span></div>
+</div>

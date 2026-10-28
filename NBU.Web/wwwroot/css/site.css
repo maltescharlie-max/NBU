@@ -175,4 +175,5 @@ h1, h2, h3, .brand-copy strong { font-family: 'Manrope', 'Segoe UI', sans-serif;
 .related-applications { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--line); }
 .related-applications > div { display: flex; align-items: center; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid #f0f2f6; color: #41556d; font-size: 11px; }
 .related-applications > a { display: inline-block; margin-top: 13px; color: #168c91; font-size: 10px; font-weight: 800; text-decoration: none; }
+.payment-amount { color: #234566; font-size: 11px; }
 @media (max-width: 767.98px) { .scholarship-grid { grid-template-columns: 1fr; }.module-switch { width: 100%; }.module-tab { flex: 1; text-align: center; }.scholarship-long { grid-template-columns: 1fr; gap: 18px; }.status-filter { max-width: none; } }

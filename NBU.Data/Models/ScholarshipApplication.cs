@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NBU.Data.Models;
 
@@ -21,4 +22,7 @@ public sealed class ScholarshipApplication
     public Student Student { get; set; } = null!;
     public Scholarship Scholarship { get; set; } = null!;
     public ICollection<Payment> Payments { get; set; } = new List<Payment>();
+
+    [NotMapped]
+    public string PaymentLabel => $"{Student.FullName} · {Scholarship.Name}";
 }

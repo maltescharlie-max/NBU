@@ -1,0 +1,31 @@
+@model IEnumerable<NBU.Data.Models.Payment>
+@{
+    ViewData["Title"] = "Pagos";
+    var selectedStatus = ViewData["Status"]?.ToString() ?? "";
+}
+<section class="page-heading"><div><span class="section-kicker">Módulo 03</span><h1>Pagos de becas</h1><p>Registra depósitos y consulta el historial de pagos por beneficiario.</p></div><a class="btn btn-brand" asp-action="Create"><span aria-hidden="true">＋</span> Registrar pago</a></section>
+<section class="data-panel">
+    <div class="data-toolbar"><div><h2>Historial de pagos</h2><p>Solo se habilitan solicitudes que fueron aceptadas.</p></div>
+        <form asp-action="Index" method="get" class="search-form status-filter"><label for="status" class="visually-hidden">Filtrar por estado</label><select id="status" name="status" class="form-select"><option value="">Todos los estados</option><option value="Pending" selected="@(selectedStatus == "Pending")">Pendientes</option><option value="Paid" selected="@(selectedStatus == "Paid")">Pagados</option><option value="Cancelled" selected="@(selectedStatus == "Cancelled")">Cancelados</option></select><button type="submit" class="btn btn-search">Filtrar</button></form>
+    </div>
+    @if (!Model.Any())
+    {
+        <div class="empty-state"><span class="empty-icon">↗</span><h3>Aún no hay pagos registrados</h3><p>Cuando una solicitud esté aceptada, podrás registrar aquí los depósitos correspondientes.</p><a class="btn btn-brand" asp-action="Create">Registrar pago</a></div>
+    }
+    else
+    {
+        <div class="table-responsive"><table class="table student-table align-middle"><thead><tr><th>Beneficiario</th><th>Beca</th><th>Período</th><th>Fecha de depósito</th><th>Monto</th><th>Estado</th><th class="text-end">Acciones</th></tr></thead>
+            <tbody>@foreach (var item in Model) { <tr>
+                <td><div class="student-cell"><span class="avatar-bubble">@item.ScholarshipApplication.Student.FirstName[..1]@item.ScholarshipApplication.Student.LastName[..1]</span><span><strong>@item.ScholarshipApplication.Student.FirstName @item.ScholarshipApplication.Student.LastName</strong><small>@item.ScholarshipApplication.Student.StudentCode</small></span></div></td>
+                <td>@item.ScholarshipApplication.Scholarship.Name</td><td>@item.Period</td><td>@item.DepositDate.ToString("dd MMM yyyy")</td>
+                <td><strong class="payment-amount">@item.Amount.ToString("C2", new System.Globalization.CultureInfo("es-NI"))</strong></td>
+                <td><span class="status-pill @PaymentStatusClass(item.Status)">@PaymentStatus(item.Status)</span></td>
+                <td><div class="row-actions"><a asp-action="Details" asp-route-id="@item.Id">Ver</a><a asp-action="Edit" asp-route-id="@item.Id">Editar</a><a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a></div></td>
+            </tr> }</tbody>
+        </table></div>
+    }
+</section>
+@functions {
+    private static string PaymentStatus(string status) => status switch { "Pending" => "Pendiente", "Paid" => "Pagado", "Cancelled" => "Cancelado", _ => status };
+    private static string PaymentStatusClass(string status) => status switch { "Pending" => "status-pending", "Paid" => "status-active", _ => "status-inactive" };
+}
