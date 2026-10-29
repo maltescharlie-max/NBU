@@ -2,54 +2,42 @@
     ViewData["Title"] = "Inicio";
 }
 
-<section class="welcome-hero">
-    <div class="hero-content">
-        <span class="eyebrow"><span class="eyebrow-star">✦</span> Nicaragua Becas Universitarias</span>
-        <h1>Tu esfuerzo<br /><span>abre oportunidades.</span></h1>
-        <p>Un espacio para acompañar el camino universitario: becas, pagos, noticias y oportunidades, en un solo lugar.</p>
-        <div class="hero-actions">
-            <a class="btn btn-brand" asp-controller="Students" asp-action="Index">Gestionar estudiantes <span aria-hidden="true">→</span></a>
-            <span class="hero-note">Tu esfuerzo abre oportunidades</span>
+@if (User.IsInRole("Admin"))
+{
+    <section class="welcome-hero">
+        <div class="hero-content">
+            <span class="eyebrow"><span class="eyebrow-star">✦</span> Panel de administración · NBU</span>
+            <h1>Tu esfuerzo<br /><span>abre oportunidades.</span></h1>
+            <p>Administra estudiantes, convocatorias, depósitos y publicaciones universitarias desde un solo lugar.</p>
+            <div class="hero-actions"><a class="btn btn-brand" asp-controller="Students" asp-action="Index">Abrir estudiantes <span aria-hidden="true">→</span></a><span class="hero-note">Tu esfuerzo abre oportunidades</span></div>
         </div>
-    </div>
-    <div class="hero-visual" aria-hidden="true">
-        <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
-        <div class="book-card">
-            <span class="book-star">✦</span>
-            <div class="cap"><span class="cap-board"></span><span class="cap-base"></span><span class="cap-tassel"></span></div>
-            <div class="open-book"><span></span><span></span></div>
+        <div class="hero-visual" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="book-card"><span class="book-star">✦</span><div class="cap"><span class="cap-board"></span><span class="cap-base"></span><span class="cap-tassel"></span></div><div class="open-book"><span></span><span></span></div></div><div class="floating-note note-top"><span>✦</span> Nuevas oportunidades</div><div class="floating-note note-bottom"><i></i> Caminos que comienzan contigo</div></div>
+    </section>
+    <section class="section-heading"><div><span class="section-kicker">Administración</span><h2>¿Qué deseas gestionar?</h2></div><p>Cuatro módulos para dar seguimiento a la experiencia de becas.</p></section>
+    <section class="quick-grid" aria-label="Módulos administrativos">
+        <a class="quick-card quick-card-primary" asp-controller="Students" asp-action="Index"><span class="quick-icon icon-student">♙</span><span class="quick-arrow">↗</span><h3>Estudiantes</h3><p>Registra beneficiarios y mantén su información al día.</p><span class="card-link">Abrir módulo <b>→</b></span></a>
+        <a class="quick-card quick-card-primary" asp-controller="Scholarships" asp-action="Index"><span class="quick-icon icon-scholarship">✧</span><span class="quick-arrow">↗</span><h3>Becas y solicitudes</h3><p>Administra convocatorias y revisa cada solicitud.</p><span class="card-link">Abrir módulo <b>→</b></span></a>
+        <a class="quick-card quick-card-primary" asp-controller="Payments" asp-action="Index"><span class="quick-icon icon-payment">↗</span><span class="quick-arrow">↗</span><h3>Pagos</h3><p>Registra depósitos y consulta su historial.</p><span class="card-link">Abrir módulo <b>→</b></span></a>
+        <a class="quick-card quick-card-primary" asp-controller="Publications" asp-action="Index"><span class="quick-icon icon-news">✦</span><span class="quick-arrow">↗</span><h3>Noticias y eventos</h3><p>Comparte avisos y fechas importantes con estudiantes.</p><span class="card-link">Abrir módulo <b>→</b></span></a>
+    </section>
+    <section class="bottom-banner"><span class="banner-spark" aria-hidden="true">✦</span><div><strong>Una oportunidad puede cambiar el futuro.</strong><p>NBU conecta el talento universitario con el apoyo que necesita.</p></div><span class="banner-label">Nicaragua · Educación · Futuro</span></section>
+}
+else
+{
+    <section class="welcome-hero guest-hero">
+        <div class="hero-content">
+            <span class="eyebrow"><span class="eyebrow-star">✦</span> Nicaragua Becas Universitarias</span>
+            <h1>Tu esfuerzo<br /><span>abre oportunidades.</span></h1>
+            <p>Consulta convocatorias, revisa tus solicitudes y mantente al día con los depósitos, noticias y eventos universitarios.</p>
+            <div class="hero-actions"><a class="btn btn-brand" asp-controller="Account" asp-action="Login">Ingresar a mi cuenta <span aria-hidden="true">→</span></a><span class="hero-note">Portal para estudiantes y equipo NBU</span></div>
         </div>
-        <div class="floating-note note-top"><span>✦</span> Nuevas oportunidades</div>
-        <div class="floating-note note-bottom"><i></i> Caminos que comienzan contigo</div>
-    </div>
-</section>
-
-<section class="section-heading">
-    <div><span class="section-kicker">Tu espacio NBU</span><h2>¿Qué deseas hacer hoy?</h2></div>
-    <p>Accesos rápidos para acompañar cada etapa de la beca.</p>
-</section>
-
-<section class="quick-grid" aria-label="Accesos rápidos">
-    <a class="quick-card quick-card-primary" asp-controller="Students" asp-action="Index">
-        <span class="quick-icon icon-student">♙</span><span class="quick-arrow">↗</span>
-        <h3>Estudiantes</h3><p>Registra beneficiarios y mantén su información al día.</p><span class="card-link">Abrir módulo <b>→</b></span>
-    </a>
-    <a class="quick-card quick-card-primary" asp-controller="Scholarships" asp-action="Index">
-        <span class="quick-icon icon-scholarship">✧</span><span class="quick-arrow">↗</span>
-        <h3>Becas y solicitudes</h3><p>Administra convocatorias y revisa cada solicitud.</p><span class="card-link">Abrir módulo <b>→</b></span>
-    </a>
-    <a class="quick-card quick-card-primary" asp-controller="Payments" asp-action="Index">
-        <span class="quick-icon icon-payment">↗</span><span class="quick-arrow">↗</span>
-        <h3>Pagos</h3><p>Registra depósitos y consulta su historial.</p><span class="card-link">Abrir módulo <b>→</b></span>
-    </a>
-    <a class="quick-card quick-card-primary" asp-controller="Publications" asp-action="Index">
-        <span class="quick-icon icon-news">✦</span><span class="quick-arrow">↗</span>
-        <h3>Noticias y eventos</h3><p>Comparte avisos y fechas importantes con estudiantes.</p><span class="card-link">Abrir módulo <b>→</b></span>
-    </a>
-</section>
-
-<section class="bottom-banner">
-    <span class="banner-spark" aria-hidden="true">✦</span>
-    <div><strong>Una oportunidad puede cambiar el futuro.</strong><p>NBU conecta el talento universitario con el apoyo que necesita.</p></div>
-    <span class="banner-label">Nicaragua · Educación · Futuro</span>
-</section>
+        <div class="hero-visual" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="book-card"><span class="book-star">✦</span><div class="cap"><span class="cap-board"></span><span class="cap-base"></span><span class="cap-tassel"></span></div><div class="open-book"><span></span><span></span></div></div><div class="floating-note note-top"><span>✦</span> Becas universitarias</div><div class="floating-note note-bottom"><i></i> Información en un solo lugar</div></div>
+    </section>
+    <section class="section-heading"><div><span class="section-kicker">Tu espacio NBU</span><h2>Todo tu proceso, más claro</h2></div><p>Ingresa para consultar información asociada a tu cuenta.</p></section>
+    <section class="quick-grid" aria-label="Servicios del portal">
+        <article class="quick-card"><span class="quick-icon icon-scholarship">✧</span><h3>Convocatorias</h3><p>Revisa las becas disponibles y presenta tu solicitud.</p></article>
+        <article class="quick-card"><span class="quick-icon icon-payment">↗</span><h3>Mis depósitos</h3><p>Consulta pagos registrados por el personal NBU.</p></article>
+        <article class="quick-card"><span class="quick-icon icon-news">✦</span><h3>Noticias y eventos</h3><p>Entérate de actividades y avisos universitarios.</p></article>
+        <article class="quick-card"><span class="quick-icon icon-student">♙</span><h3>Mis notificaciones</h3><p>Encuentra los avisos dirigidos a tu cuenta.</p></article>
+    </section>
+}

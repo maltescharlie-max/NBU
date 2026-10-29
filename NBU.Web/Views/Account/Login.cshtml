@@ -1,0 +1,19 @@
+@model LoginViewModel
+@{ ViewData["Title"] = "Ingresar"; }
+<section class="auth-shell">
+    <div class="auth-card">
+        <span class="section-kicker">Acceso seguro</span>
+        <h1>Bienvenido a NBU</h1>
+        <p>Ingresa con la cuenta asignada por el equipo del sistema.</p>
+        <form asp-action="Login" method="post">
+            <input asp-for="ReturnUrl" type="hidden" />
+            <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+            <div class="form-field"><label asp-for="Email"></label><input asp-for="Email" class="form-control" autocomplete="username" /><span asp-validation-for="Email" class="text-danger"></span></div>
+            <div class="form-field"><label asp-for="Password"></label><input asp-for="Password" class="form-control" autocomplete="current-password" /><span asp-validation-for="Password" class="text-danger"></span></div>
+            <label class="check-option"><input asp-for="RememberMe" /><span>@Html.DisplayNameFor(model => model.RememberMe)</span></label>
+            <button type="submit" class="btn btn-brand w-100">Ingresar</button>
+        </form>
+        <a class="back-link d-inline-block mt-3" asp-controller="Home" asp-action="Index">← Volver al inicio</a>
+    </div>
+</section>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

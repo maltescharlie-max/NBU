@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NBU.Data;
@@ -5,6 +6,7 @@ using NBU.Data.Models;
 
 namespace NBU.Web.Controllers;
 
+[Authorize(Roles = NbuRoles.Admin)]
 public class PaymentsController(AppDbContext context) : Controller
 {
     public async Task<IActionResult> Index(string? status)
@@ -34,6 +36,7 @@ public class PaymentsController(AppDbContext context) : Controller
     [HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> Create([Bind("ScholarshipApplicationId,Amount,DepositDate,Period,Status")] Payment payment)
     {
+        ModelState.Remove(nameof(payment.ScholarshipApplication));
         await ValidatePayment(payment);
         if (!ModelState.IsValid)
         {
@@ -59,6 +62,7 @@ public class PaymentsController(AppDbContext context) : Controller
     public async Task<IActionResult> Edit(int id, [Bind("Id,ScholarshipApplicationId,Amount,DepositDate,Period,Status")] Payment payment)
     {
         if (id != payment.Id) return NotFound();
+        ModelState.Remove(nameof(payment.ScholarshipApplication));
         await ValidatePayment(payment);
         if (!ModelState.IsValid)
         {

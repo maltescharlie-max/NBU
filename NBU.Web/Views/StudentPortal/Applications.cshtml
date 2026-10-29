@@ -1,0 +1,8 @@
+@model StudentApplicationsViewModel
+@{ ViewData["Title"] = "Mis solicitudes"; }
+<section class="page-heading"><div><span class="section-kicker">Seguimiento personal</span><h1>Mis solicitudes</h1><p>Consulta las becas que has solicitado y su estado de revisión.</p></div><a class="btn btn-brand" asp-action="Scholarships">Ver becas</a></section>
+<section class="data-panel"><div class="data-toolbar"><div><h2>Historial de solicitudes</h2><p>@Model.Student.FullName</p></div></div>
+@if (Model.Applications.Count == 0) { <div class="empty-state"><h3>Aún no tienes solicitudes</h3><p>Las becas solicitadas aparecerán aquí.</p><a class="btn btn-brand" asp-action="Scholarships">Explorar becas</a></div> }
+else { <div class="table-responsive"><table class="table student-table align-middle"><thead><tr><th>Beca</th><th>Enviada</th><th>Estado</th><th>Observación</th><th>Depósitos</th></tr></thead><tbody>@foreach (var item in Model.Applications) { <tr><td><strong>@item.Scholarship.Name</strong></td><td>@item.SubmittedAt.ToLocalTime().ToString("dd/MM/yyyy")</td><td><span class="status-pill @StatusClass(item.Status)">@StatusLabel(item.Status)</span></td><td>@(string.IsNullOrWhiteSpace(item.Observations) ? "Sin observaciones" : item.Observations)</td><td>@item.Payments.Count</td></tr> }</tbody></table></div> }
+</section>
+@functions { private static string StatusLabel(string status) => status switch { "Pending" => "En revisión", "Accepted" => "Aceptada", "Rejected" => "No aprobada", _ => status }; private static string StatusClass(string status) => status switch { "Pending" => "status-pending", "Accepted" => "status-active", _ => "status-inactive" }; }

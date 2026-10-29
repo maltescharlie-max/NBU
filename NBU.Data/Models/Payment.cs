@@ -23,5 +23,7 @@ public sealed class Payment
     public ScholarshipApplication ScholarshipApplication { get; set; } = null!;
 
     [NotMapped]
-    public string ApplicationLabel => $"{ScholarshipApplication.Student.FullName} · {ScholarshipApplication.Scholarship.Name}";
+    public string ApplicationLabel => ScholarshipApplication is null || ScholarshipApplication.Student is null || ScholarshipApplication.Scholarship is null
+        ? string.Empty
+        : $"{ScholarshipApplication.Student.FullName} · {ScholarshipApplication.Scholarship.Name}";
 }

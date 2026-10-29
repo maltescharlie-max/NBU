@@ -1,9 +1,12 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using NBU.Data.Models;
 
 namespace NBU.Data;
 
-public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
+public sealed class AppDbContext(DbContextOptions<AppDbContext> options)
+    : IdentityDbContext<NbuUser, IdentityRole<int>, int>(options)
 {
     public DbSet<Student> Students => Set<Student>();
     public DbSet<Scholarship> Scholarships => Set<Scholarship>();
@@ -15,6 +18,16 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<NbuUser>(entity =>
+        {
+            entity.Property(user => user.DisplayName).HasMaxLength(120).IsRequired();
+            entity.HasIndex(user => user.StudentId).IsUnique();
+            entity.HasOne(user => user.Student)
+                .WithOne()
+                .HasForeignKey<NbuUser>(user => user.StudentId)
+                .OnDelete(DeleteBehavior.SetNull);
+        });
 
         modelBuilder.Entity<Student>(entity =>
         {

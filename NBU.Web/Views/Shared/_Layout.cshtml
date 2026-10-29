@@ -21,15 +21,37 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="mainNav">
-                    <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
-                        <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index">Inicio</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-controller="Students" asp-action="Index">Estudiantes</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-controller="Scholarships" asp-action="Index">Becas y solicitudes</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-controller="Payments" asp-action="Index">Pagos</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-controller="Publications" asp-action="Index">Noticias y eventos</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-controller="Notifications" asp-action="Index" aria-label="Notificaciones">Avisos</a></li>
+                    <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index">Panel</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Students" asp-action="Index">Estudiantes</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Scholarships" asp-action="Index">Becas</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Payments" asp-action="Index">Pagos</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Publications" asp-action="Index">Noticias y eventos</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Notifications" asp-action="Index">Avisos</a></li>
+                        }
+                        else if (User.IsInRole("Student"))
+                        {
+                            <li class="nav-item"><a class="nav-link" asp-controller="StudentPortal" asp-action="Index">Inicio</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="StudentPortal" asp-action="Scholarships">Becas</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="StudentPortal" asp-action="Applications">Mis solicitudes</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="StudentPortal" asp-action="Payments">Mis pagos</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="StudentPortal" asp-action="Publications">Noticias</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="StudentPortal" asp-action="Notifications">Avisos</a></li>
+                        }
                     </ul>
-                    <span class="staff-chip ms-lg-4"><span class="status-dot"></span> Panel institucional</span>
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        <div class="account-actions ms-lg-3">
+                            <a class="account-name" asp-controller="Account" asp-action="ChangePassword">@User.Identity.Name</a>
+                            <form asp-controller="Account" asp-action="Logout" method="post"><button type="submit" class="btn btn-sm btn-outline-secondary">Salir</button></form>
+                        </div>
+                    }
+                    else
+                    {
+                        <a class="btn btn-brand btn-sm ms-lg-3" asp-controller="Account" asp-action="Login">Ingresar</a>
+                    }
                 </div>
             </div>
         </nav>

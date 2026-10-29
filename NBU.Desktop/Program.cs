@@ -14,6 +14,11 @@ static class Program
         var dbOptions = new DbContextOptionsBuilder<AppDbContext>()
             .UseSqlServer(connectionString)
             .Options;
+        using (var context = new AppDbContext(dbOptions))
+        using (var login = new AdminLoginForm(context))
+        {
+            if (login.ShowDialog() != DialogResult.OK) return;
+        }
         Application.Run(new Form1(dbOptions));
     }
 

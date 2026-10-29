@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NBU.Data;
@@ -5,6 +6,7 @@ using NBU.Data.Models;
 
 namespace NBU.Web.Controllers;
 
+[Authorize(Roles = NbuRoles.Admin)]
 public class StudentsController(AppDbContext context) : Controller
 {
     public async Task<IActionResult> Index(string? search)

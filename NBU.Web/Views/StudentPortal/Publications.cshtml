@@ -1,0 +1,8 @@
+@model StudentPublicationsViewModel
+@{ ViewData["Title"] = "Noticias y eventos"; }
+<section class="page-heading"><div><span class="section-kicker">Comunidad universitaria</span><h1>Noticias y eventos</h1><p>Consulta las publicaciones del equipo NBU.</p></div></section>
+<section class="data-panel"><div class="data-toolbar"><div><h2>Últimas publicaciones</h2><p>Información y fechas importantes.</p></div></div>
+@if (Model.Publications.Count == 0) { <div class="empty-state"><h3>Aún no hay publicaciones</h3><p>Las noticias y actividades aparecerán aquí.</p></div> }
+else { <div class="publication-list">@foreach (var item in Model.Publications) { <article class="publication-card"><div class="publication-date"><strong>@(item.EventDate?.ToString("dd") ?? item.PublishedAt.ToLocalTime().ToString("dd"))</strong><span>@((item.EventDate ?? item.PublishedAt).ToString("MMM", new System.Globalization.CultureInfo("es-NI")).ToUpperInvariant())</span></div><div class="publication-body"><div class="publication-meta"><span class="publication-kind @(item.Type == "Event" ? "kind-event" : item.Type == "Announcement" ? "kind-announcement" : "kind-news")">@TypeLabel(item.Type)</span><span>@item.PublishedAt.ToLocalTime().ToString("dd/MM/yyyy")</span></div><h3>@item.Title</h3><p class="student-publication-content">@item.Content</p>@if (item.EventDate is not null) { <small class="event-date-label">Fecha del evento: @item.EventDate.Value.ToString("dd/MM/yyyy HH:mm")</small> }</div></article> }</div> }
+</section>
+@functions { private static string TypeLabel(string type) => type switch { "Event" => "Evento", "Announcement" => "Aviso", _ => "Noticia" }; }

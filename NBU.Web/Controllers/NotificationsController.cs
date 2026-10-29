@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NBU.Data;
 
 namespace NBU.Web.Controllers;
 
+[Authorize(Roles = NbuRoles.Admin)]
 public class NotificationsController(AppDbContext context) : Controller
 {
     public async Task<IActionResult> Index(string? state)

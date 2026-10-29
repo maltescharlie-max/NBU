@@ -17,6 +17,7 @@
 - Noticias y eventos
 - Notificaciones
 - Mi perfil
+- Cambio de contraseña
 
 ### Personal encargado
 
@@ -26,8 +27,11 @@
 - Registro y consulta de pagos
 - Administración de noticias y eventos
 - Revisión de notificaciones
+- Acceso administrativo en Windows Forms
 
 La interfaz web debe adaptarse a pantallas pequeñas. En celular, priorizar navegación sencilla, tarjetas legibles y controles cómodos de tocar. La aplicación Windows Forms estará enfocada en las tareas de administración.
+
+El inicio de sesión separa los roles `Admin` y `Student`. Los módulos de administración exigen el rol de administración; el portal limita solicitudes, pagos y notificaciones a la persona autenticada. Las cuentas ficticias de muestra se crean solo en Desarrollo.
 
 ## Módulos funcionales
 
@@ -56,6 +60,8 @@ Cada módulo implementará listar (Index), crear (Create), editar (Edit) y elimi
 
 El personal registra o actualiza pagos; el estudiante solo los consulta.
 
+La pantalla estudiantil presenta “Transferencias bancarias” como una opción deshabilitada. No está conectada a servicios financieros y no envía ni recibe dinero.
+
 ## Reparto de trabajo sugerido
 
 Confirmar los responsables con el equipo antes de empezar a editar archivos compartidos.
@@ -74,3 +80,12 @@ Cada integrante debe trabajar en una rama propia, realizar cambios pequeños y a
 - Manual de usuario
 - Presentación
 - Ejecutable de escritorio
+
+## Equipo y ficha del proyecto
+
+- **Proyecto:** NBU — Nicaragua Becas Universitarias
+- **Grupo:** INS-1111
+- **Integrantes:** Carlos Jose Maltes Martinez, Verno Jose Chaves Lopez y Dereck Sahid Davila Duarte.
+- **Docente:** Ing. Carlos Gaitán.
+- **Fecha de inicio registrada:** 28/10/2026.
+- **Fecha de entrega:** por definir.

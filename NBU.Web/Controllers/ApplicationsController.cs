@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NBU.Data;
@@ -5,6 +6,7 @@ using NBU.Data.Models;
 
 namespace NBU.Web.Controllers;
 
+[Authorize(Roles = NbuRoles.Admin)]
 public class ApplicationsController(AppDbContext context) : Controller
 {
     public async Task<IActionResult> Index(string? status)
@@ -34,6 +36,8 @@ public class ApplicationsController(AppDbContext context) : Controller
     [HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> Create([Bind("StudentId,ScholarshipId,Status,Observations")] ScholarshipApplication application)
     {
+        ModelState.Remove(nameof(application.Student));
+        ModelState.Remove(nameof(application.Scholarship));
         await ValidateApplication(application);
         if (!ModelState.IsValid)
         {
@@ -60,6 +64,8 @@ public class ApplicationsController(AppDbContext context) : Controller
     public async Task<IActionResult> Edit(int id, [Bind("Id,StudentId,ScholarshipId,Status,Observations")] ScholarshipApplication application)
     {
         if (id != application.Id) return NotFound();
+        ModelState.Remove(nameof(application.Student));
+        ModelState.Remove(nameof(application.Scholarship));
         await ValidateApplication(application, id);
         if (!ModelState.IsValid)
         {

@@ -1,0 +1,23 @@
+@model StudentDashboardViewModel
+@{ ViewData["Title"] = "Mi espacio"; }
+<section class="student-welcome">
+    <div><span class="section-kicker">Mi espacio NBU</span><h1>Hola, @Model.Student.FirstName</h1><p>Este es el resumen de tus becas y avisos universitarios.</p></div>
+    <span class="student-status"><i></i> @Model.Student.University</span>
+</section>
+<section class="student-stat-grid">
+    <article class="student-stat"><span>Convocatorias abiertas</span><strong>@Model.OpenScholarships</strong><a asp-action="Scholarships">Ver becas →</a></article>
+    <article class="student-stat"><span>Solicitudes en revisión</span><strong>@Model.PendingApplications</strong><a asp-action="Applications">Consultar estado →</a></article>
+    <article class="student-stat"><span>Avisos sin leer</span><strong>@Model.UnreadNotifications</strong><a asp-action="Notifications">Ver notificaciones →</a></article>
+    <article class="student-stat"><span>Depósitos registrados</span><strong>@Model.PaidTotal.ToString("C0", new System.Globalization.CultureInfo("es-NI"))</strong><a asp-action="Payments">Ver historial →</a></article>
+</section>
+<section class="portal-columns">
+    <div class="data-panel"><div class="data-toolbar"><div><h2>Mis solicitudes recientes</h2><p>Estado actual de las becas a las que aplicaste.</p></div><a class="subtle-link" asp-action="Applications">Ver todas →</a></div>
+        @if (Model.Applications.Count == 0) { <div class="empty-state compact-empty"><h3>Aún no tienes solicitudes</h3><p>Explora las convocatorias abiertas para comenzar.</p><a class="btn btn-brand" asp-action="Scholarships">Ver becas disponibles</a></div> }
+        else { <div class="portal-list">@foreach (var application in Model.Applications) { <div class="portal-list-row"><div><strong>@application.Scholarship.Name</strong><small>Enviada @application.SubmittedAt.ToLocalTime().ToString("dd/MM/yyyy")</small></div><span class="status-pill @StatusClass(application.Status)">@StatusLabel(application.Status)</span></div> }</div> }
+    </div>
+    <div class="data-panel"><div class="data-toolbar"><div><h2>Avisos recientes</h2><p>Información importante para ti.</p></div><a class="subtle-link" asp-action="Notifications">Ver todos →</a></div>
+        @if (Model.Notifications.Count == 0) { <div class="compact-empty"><p>No tienes avisos nuevos.</p></div> }
+        else { <div class="portal-list">@foreach (var notification in Model.Notifications) { <div class="portal-list-row"><div><strong>@(notification.Publication?.Title ?? "Aviso NBU")</strong><small>@notification.Message</small></div>@if (!notification.IsRead) { <span class="unread-dot" aria-label="Sin leer"></span> }</div> }</div> }
+    </div>
+</section>
+@functions { private static string StatusLabel(string status) => status switch { "Pending" => "En revisión", "Accepted" => "Aceptada", "Rejected" => "No aprobada", _ => status }; private static string StatusClass(string status) => status switch { "Pending" => "status-pending", "Accepted" => "status-active", _ => "status-inactive" }; }

@@ -24,5 +24,7 @@ public sealed class ScholarshipApplication
     public ICollection<Payment> Payments { get; set; } = new List<Payment>();
 
     [NotMapped]
-    public string PaymentLabel => $"{Student.FullName} · {Scholarship.Name}";
+    public string PaymentLabel => Student is null || Scholarship is null
+        ? string.Empty
+        : $"{Student.FullName} · {Scholarship.Name}";
 }

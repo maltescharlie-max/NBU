@@ -87,6 +87,10 @@ project.lock.json
 project.fragment.lock.json
 artifacts/
 .artifacts/
+.artifact-work/
+
+# Local self-contained Windows publish output (too large for GitHub source history)
+/entregables/escritorio/
 
 # ASP.NET Scaffolding
 ScaffoldingReadMe.txt
