@@ -13,7 +13,7 @@ public partial class Form1 : Form
     private static readonly Color Canvas = Color.FromArgb(245, 248, 252);
 
     private readonly DbContextOptions<AppDbContext> _dbOptions;
-    private readonly Panel _content = new();
+    private readonly TableLayoutPanel _content = new();
     private readonly Label _pageTitle = new();
     private readonly Label _pageSubtitle = new();
     private readonly Panel _pageBody = new();
@@ -32,12 +32,15 @@ public partial class Form1 : Form
     {
         Text = "NBU · Nicaragua Becas Universitarias";
         StartPosition = FormStartPosition.CenterScreen;
-        MinimumSize = new Size(1000, 680);
-        Size = new Size(1320, 820);
+        var workingArea = Screen.FromPoint(Cursor.Position).WorkingArea;
+        var availableWidth = Math.Max(640, workingArea.Width - 24);
+        var availableHeight = Math.Max(520, workingArea.Height - 24);
+        MinimumSize = new Size(Math.Min(1000, availableWidth), Math.Min(680, availableHeight));
+        Size = new Size(Math.Min(1320, availableWidth), Math.Min(820, availableHeight));
         BackColor = Canvas;
         Font = new Font("Segoe UI", 10F);
 
-        var sidebar = new Panel { Dock = DockStyle.Left, Width = 240, BackColor = Navy, Padding = new Padding(17, 22, 17, 16) };
+        var sidebar = new Panel { Dock = DockStyle.Fill, BackColor = Navy, Padding = new Padding(17, 22, 17, 16) };
         var brand = new Label { Text = "NBU", ForeColor = Color.White, Font = new Font("Segoe UI", 24F, FontStyle.Bold), AutoSize = true, Location = new Point(20, 20) };
         var brandSub = new Label { Text = "NICARAGUA BECAS\nUNIVERSITARIAS", ForeColor = Color.FromArgb(175, 202, 221), Font = new Font("Segoe UI", 8F, FontStyle.Bold), AutoSize = true, Location = new Point(22, 60) };
         var divider = new Panel { BackColor = Color.FromArgb(36, 77, 119), Height = 1, Dock = DockStyle.Top, Margin = new Padding(0, 14, 0, 13) };
@@ -62,9 +65,8 @@ public partial class Form1 : Form
         sidebar.Controls.Add(divider);
         sidebar.Controls.Add(brandSub);
         sidebar.Controls.Add(brand);
-        Controls.Add(sidebar);
 
-        var header = new Panel { Dock = DockStyle.Top, Height = 83, BackColor = Color.White, Padding = new Padding(30, 15, 30, 12) };
+        var header = new Panel { Dock = DockStyle.Fill, BackColor = Color.White, Padding = new Padding(30, 15, 30, 12), Margin = Padding.Empty };
         _pageTitle.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
         _pageTitle.ForeColor = Navy;
         _pageTitle.AutoSize = true;
@@ -76,14 +78,28 @@ public partial class Form1 : Form
         header.Controls.Add(_pageTitle);
         header.Controls.Add(_pageSubtitle);
         _content.Dock = DockStyle.Fill;
+        _content.ColumnCount = 1;
+        _content.RowCount = 2;
+        _content.Margin = Padding.Empty;
+        _content.Padding = Padding.Empty;
         _content.BackColor = Canvas;
-        _content.Controls.Add(header);
+        _content.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
+        _content.RowStyles.Add(new RowStyle(SizeType.Absolute, 83));
+        _content.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
         _pageBody.Dock = DockStyle.Fill;
         _pageBody.Padding = new Padding(30, 26, 30, 30);
         _pageBody.BackColor = Canvas;
-        _content.Controls.Add(_pageBody);
-        header.BringToFront();
-        Controls.Add(_content);
+        _pageBody.AutoScroll = true;
+        _content.Controls.Add(header, 0, 0);
+        _content.Controls.Add(_pageBody, 0, 1);
+
+        var shell = new TableLayoutPanel { Dock = DockStyle.Fill, ColumnCount = 2, RowCount = 1, Margin = Padding.Empty, Padding = Padding.Empty, BackColor = Canvas };
+        shell.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 240));
+        shell.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
+        shell.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
+        shell.Controls.Add(sidebar, 0, 0);
+        shell.Controls.Add(_content, 1, 0);
+        Controls.Add(shell);
     }
 
     private void AddNavigation(string label, Func<Task> action)
@@ -126,15 +142,15 @@ public partial class Form1 : Form
         _pageTitle.Text = "Bienvenido al panel NBU";
         _pageSubtitle.Text = "Tu esfuerzo abre oportunidades · Administración universitaria";
         _pageBody.Controls.Clear();
-        var panel = MakeCard(new Rectangle(30, 30, Math.Max(700, _pageBody.ClientSize.Width - 75), 230));
+        var panel = MakeCard(new Rectangle(30, 30, Math.Max(360, _pageBody.ClientSize.Width - 60), 230));
         panel.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
         panel.BackColor = Color.FromArgb(11, 55, 99);
         var title = new Label { Text = "Acompañamos el\ntalento universitario.", ForeColor = Color.White, Font = new Font("Segoe UI", 24F, FontStyle.Bold), AutoSize = true, Location = new Point(28, 29) };
-        var subtitle = new Label { Text = "Gestiona becas, beneficiarios y avisos desde un mismo espacio.", ForeColor = Color.FromArgb(202, 224, 239), Font = new Font("Segoe UI", 10F), AutoSize = true, Location = new Point(31, 104) };
+        var subtitle = new Label { Text = "Gestiona becas, beneficiarios y avisos desde un mismo espacio.", ForeColor = Color.FromArgb(202, 224, 239), Font = new Font("Segoe UI", 10F), AutoSize = false, Size = new Size(Math.Max(220, panel.Width - 62), 42), Location = new Point(31, 104), Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right };
         var action = MakeButton("Abrir estudiantes  →", true);
         action.Location = new Point(30, 157);
         action.Click += async (_, _) => await ShowStudentsAsync();
-        var accent = new Label { Text = "✦", ForeColor = Color.FromArgb(255, 194, 63), Font = new Font("Segoe UI", 68F, FontStyle.Bold), AutoSize = true, Location = new Point(Math.Max(540, panel.Width - 160), 45), Anchor = AnchorStyles.Top | AnchorStyles.Right };
+        var accent = new Label { Text = "✦", ForeColor = Color.FromArgb(255, 194, 63), Font = new Font("Segoe UI", 68F, FontStyle.Bold), AutoSize = true, Location = new Point(Math.Max(220, panel.Width - 145), 45), Anchor = AnchorStyles.Top | AnchorStyles.Right };
         panel.Controls.Add(title);
         panel.Controls.Add(subtitle);
         panel.Controls.Add(action);
@@ -143,10 +159,13 @@ public partial class Form1 : Form
 
         var section = new Label { Text = "MÓDULOS DEL SISTEMA", ForeColor = Color.FromArgb(21, 153, 164), Font = new Font("Segoe UI", 8.5F, FontStyle.Bold), AutoSize = true, Location = new Point(32, 292) };
         _pageBody.Controls.Add(section);
+        var twoColumns = _pageBody.ClientSize.Width >= 620;
+        var secondColumn = twoColumns ? 322 : 30;
+        var thirdRow = twoColumns ? 495 : 670;
         AddDashboardCard("Estudiantes", "Registra y actualiza expedientes.", 30, 320, () => ShowStudentsAsync());
-        AddDashboardCard("Becas y solicitudes", "Convocatorias y decisiones.", 322, 320, () => OpenManager(ModuleForms.Scholarships(_dbOptions)));
-        AddDashboardCard("Pagos", "Registro de depósitos.", 30, 495, () => OpenManager(ModuleForms.Payments(_dbOptions)));
-        AddDashboardCard("Noticias y eventos", "Avisos para la comunidad.", 322, 495, () => OpenManager(ModuleForms.Publications(_dbOptions)));
+        AddDashboardCard("Becas y solicitudes", "Convocatorias y decisiones.", secondColumn, 320, () => OpenManager(ModuleForms.Scholarships(_dbOptions)));
+        AddDashboardCard("Pagos", "Registro de depósitos.", 30, thirdRow, () => OpenManager(ModuleForms.Payments(_dbOptions)));
+        AddDashboardCard("Noticias y eventos", "Avisos para la comunidad.", secondColumn, thirdRow, () => OpenManager(ModuleForms.Publications(_dbOptions)));
     }
 
     private void AddDashboardCard(string title, string description, int x, int y, Func<Task> action)
@@ -189,7 +208,6 @@ public partial class Form1 : Form
         tools.Controls.Add(edit);
         tools.Controls.Add(search);
         tools.Controls.Add(searchButton);
-        _pageBody.Controls.Add(tools);
 
         var grid = new DataGridView
         {
@@ -221,9 +239,15 @@ public partial class Form1 : Form
         var card = MakeCard(new Rectangle(0, 0, 1000, 100));
         card.Dock = DockStyle.Fill;
         card.Padding = new Padding(12);
+        card.Margin = Padding.Empty;
         card.Controls.Add(grid);
-        _pageBody.Controls.Add(card);
-        tools.BringToFront();
+        var studentsLayout = new TableLayoutPanel { Dock = DockStyle.Fill, ColumnCount = 1, RowCount = 2, Margin = Padding.Empty, Padding = Padding.Empty, BackColor = Canvas };
+        studentsLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
+        studentsLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 60));
+        studentsLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
+        studentsLayout.Controls.Add(tools, 0, 0);
+        studentsLayout.Controls.Add(card, 0, 1);
+        _pageBody.Controls.Add(studentsLayout);
 
         async Task Reload(string? term = null)
         {
