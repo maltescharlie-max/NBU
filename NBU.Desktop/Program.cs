@@ -30,6 +30,6 @@ static class Program
             if (!string.IsNullOrWhiteSpace(value)) return value;
         }
 
-        return "Server=(localdb)\\MSSQLLocalDB;Database=NBU;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True";
+        return "Server=.\\SQLEXPRESS22;Database=NBU;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True";
     }
 }

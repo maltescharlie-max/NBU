@@ -36,6 +36,6 @@ Panel web adaptable con los cuatro módulos de administración: estudiantes, bec
 
 ## Ejecutar localmente
 
-Se requiere el SDK de .NET 8 y SQL Server LocalDB (o una instancia SQL Server configurada). Las cadenas de conexión de desarrollo están en `NBU.Web/appsettings.json` y `NBU.Desktop/appsettings.json`; ajústalas a la instancia disponible en cada computadora. El escritorio también admite la variable de entorno `NBU_SQL_CONNECTION`. No uses credenciales reales en archivos versionados.
+Se requiere el SDK de .NET 8 y SQL Server Express o LocalDB. La configuración de desarrollo apunta a `SQLEXPRESS22`; si instalas otra instancia, actualiza las cadenas de `NBU.Web/appsettings.json`, `NBU.Desktop/appsettings.json` y el valor predeterminado de `NBU.Desktop/Program.cs`. El escritorio también admite la variable de entorno `NBU_SQL_CONNECTION`. No uses credenciales reales en archivos versionados.
 
 Abre `NBU.sln` en Visual Studio o ejecuta `dotnet run --project NBU.Web` desde la raíz del repositorio.
