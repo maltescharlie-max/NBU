@@ -32,10 +32,10 @@ Los estudiantes podrán consultar sus solicitudes, pagos, noticias, eventos y no
 
 ## Estado
 
-Panel web adaptable y los cuatro módulos de administración implementados: estudiantes, becas y solicitudes, pagos, y noticias y eventos. Las publicaciones pueden generar notificaciones en la plataforma para estudiantes activos. Los pagos solo se asocian a solicitudes aceptadas. El inicio de sesión y las vistas de Windows Forms siguen pendientes.
+Panel web adaptable y los cuatro módulos de administración implementados: estudiantes, becas y solicitudes, pagos, y noticias y eventos. Las publicaciones pueden generar notificaciones en la plataforma para estudiantes activos. Los pagos solo se asocian a solicitudes aceptadas. En Windows Forms ya se inició el panel de administración y el CRUD de estudiantes; los otros módulos de escritorio y el inicio de sesión siguen pendientes.
 
 ## Ejecutar localmente
 
-Se requiere el SDK de .NET 8 y SQL Server LocalDB (o una instancia SQL Server configurada). La cadena de conexión de desarrollo está en `NBU.Web/appsettings.json`; ajústala a la instancia disponible en cada computadora. No uses credenciales reales en archivos versionados.
+Se requiere el SDK de .NET 8 y SQL Server LocalDB (o una instancia SQL Server configurada). Las cadenas de conexión de desarrollo están en `NBU.Web/appsettings.json` y `NBU.Desktop/appsettings.json`; ajústalas a la instancia disponible en cada computadora. El escritorio también admite la variable de entorno `NBU_SQL_CONNECTION`. No uses credenciales reales en archivos versionados.
 
 Abre `NBU.sln` en Visual Studio o ejecuta `dotnet run --project NBU.Web` desde la raíz del repositorio.
