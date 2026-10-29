@@ -50,10 +50,11 @@ public partial class Form1 : Form
 
         AddNavigation("Inicio", () => { ShowDashboard(); return Task.CompletedTask; });
         AddNavigation("Estudiantes", async () => await ShowStudentsAsync());
-        AddNavigation("Becas y solicitudes", () => ShowPending("Becas y solicitudes"));
-        AddNavigation("Pagos", () => ShowPending("Pagos"));
-        AddNavigation("Noticias y eventos", () => ShowPending("Noticias y eventos"));
-        AddNavigation("Notificaciones", () => ShowPending("Notificaciones"));
+        AddNavigation("Becas", () => OpenManager(ModuleForms.Scholarships(_dbOptions)));
+        AddNavigation("Solicitudes", () => OpenManager(ModuleForms.Applications(_dbOptions)));
+        AddNavigation("Pagos", () => OpenManager(ModuleForms.Payments(_dbOptions)));
+        AddNavigation("Noticias y eventos", () => OpenManager(ModuleForms.Publications(_dbOptions)));
+        AddNavigation("Notificaciones", () => OpenManager(ModuleForms.Notifications(_dbOptions)));
 
         var motto = new Label { Text = "TU ESFUERZO\nABRE OPORTUNIDADES", ForeColor = Color.FromArgb(117, 222, 219), Font = new Font("Segoe UI", 9F, FontStyle.Bold), AutoSize = true, Dock = DockStyle.Bottom, Padding = new Padding(4, 16, 0, 4) };
         sidebar.Controls.Add(motto);
@@ -143,9 +144,9 @@ public partial class Form1 : Form
         var section = new Label { Text = "MÓDULOS DEL SISTEMA", ForeColor = Color.FromArgb(21, 153, 164), Font = new Font("Segoe UI", 8.5F, FontStyle.Bold), AutoSize = true, Location = new Point(32, 292) };
         _pageBody.Controls.Add(section);
         AddDashboardCard("Estudiantes", "Registra y actualiza expedientes.", 30, 320, () => ShowStudentsAsync());
-        AddDashboardCard("Becas y solicitudes", "Convocatorias y decisiones.", 322, 320, () => ShowPending("Becas y solicitudes"));
-        AddDashboardCard("Pagos", "Registro de depósitos.", 30, 495, () => ShowPending("Pagos"));
-        AddDashboardCard("Noticias y eventos", "Avisos para la comunidad.", 322, 495, () => ShowPending("Noticias y eventos"));
+        AddDashboardCard("Becas y solicitudes", "Convocatorias y decisiones.", 322, 320, () => OpenManager(ModuleForms.Scholarships(_dbOptions)));
+        AddDashboardCard("Pagos", "Registro de depósitos.", 30, 495, () => OpenManager(ModuleForms.Payments(_dbOptions)));
+        AddDashboardCard("Noticias y eventos", "Avisos para la comunidad.", 322, 495, () => OpenManager(ModuleForms.Publications(_dbOptions)));
     }
 
     private void AddDashboardCard(string title, string description, int x, int y, Func<Task> action)
@@ -309,15 +310,9 @@ public partial class Form1 : Form
         grid.CellDoubleClick += async (_, _) => await EditStudentAsync();
     }
 
-    private Task ShowPending(string module)
+    private Task OpenManager<T, TRow>(DesktopCrudManager<T, TRow> manager) where T : class, new() where TRow : class
     {
-        _pageTitle.Text = module;
-        _pageSubtitle.Text = "Esta pantalla se implementará en la siguiente etapa.";
-        _pageBody.Controls.Clear();
-        var card = MakeCard(new Rectangle(30, 30, 760, 150));
-        card.Controls.Add(new Label { Text = "Módulo en preparación", ForeColor = Navy, Font = new Font("Segoe UI", 16F, FontStyle.Bold), AutoSize = true, Location = new Point(22, 22) });
-        card.Controls.Add(new Label { Text = "La aplicación de escritorio compartirá la misma base de datos que el portal web.", ForeColor = Muted, Font = new Font("Segoe UI", 10F), AutoSize = true, Location = new Point(24, 61) });
-        _pageBody.Controls.Add(card);
+        using (manager) manager.ShowDialog(this);
         return Task.CompletedTask;
     }
 

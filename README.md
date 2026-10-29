@@ -32,7 +32,7 @@ Los estudiantes podrán consultar sus solicitudes, pagos, noticias, eventos y no
 
 ## Estado
 
-Panel web adaptable y los cuatro módulos de administración implementados: estudiantes, becas y solicitudes, pagos, y noticias y eventos. Las publicaciones pueden generar notificaciones en la plataforma para estudiantes activos. Los pagos solo se asocian a solicitudes aceptadas. En Windows Forms ya se inició el panel de administración y el CRUD de estudiantes; los otros módulos de escritorio y el inicio de sesión siguen pendientes.
+Panel web adaptable con los cuatro módulos de administración: estudiantes, becas y solicitudes, pagos, y noticias y eventos. En Windows Forms, el panel y los módulos de estudiantes, becas, solicitudes, pagos, publicaciones y notificaciones están implementados con operaciones de administración. Las publicaciones pueden generar notificaciones para estudiantes activos. Los pagos solo se asocian a solicitudes aceptadas. El inicio de sesión sigue pendiente.
 
 ## Ejecutar localmente
 
