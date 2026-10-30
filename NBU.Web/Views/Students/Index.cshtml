@@ -5,13 +5,17 @@
 
 <section class="page-heading">
     <div><span class="section-kicker">Módulo 01</span><h1>Estudiantes</h1><p>Administra la información de los estudiantes beneficiarios.</p></div>
-    <a class="btn btn-brand" asp-action="Create"><span aria-hidden="true">＋</span> Nuevo estudiante</a>
+    <div class="d-flex flex-wrap gap-2">
+        <a class="btn btn-outline-primary" asp-action="Registrations">Registros pendientes (@ViewData["PendingCount"])</a>
+        <a class="btn btn-brand" asp-action="Create"><span aria-hidden="true">＋</span> Nuevo estudiante</a>
+    </div>
 </section>
 
 <section class="data-panel">
     <div class="data-toolbar">
-        <div><h2>Directorio estudiantil</h2><p>Busca por nombre, código, cédula o correo.</p></div>
+        <div><h2>Directorio estudiantil</h2><p>Aquí aparecen estudiantes aceptados. Los nuevos registros se revisan en su propio apartado.</p></div>
         <form asp-action="Index" method="get" class="search-form">
+            <select class="form-select" name="status"><option value="">Todos</option><option value="Active" selected="@(ViewData["Status"]?.ToString() == "Active")">Activos</option><option value="Inactive" selected="@(ViewData["Status"]?.ToString() == "Inactive")">Inactivos</option></select>
             <label class="visually-hidden" for="search">Buscar estudiantes</label>
             <input id="search" name="search" value="@ViewData["Search"]" class="form-control" placeholder="Buscar estudiante…" />
             <button type="submit" class="btn btn-search">Buscar</button>
@@ -19,7 +23,7 @@
     </div>
     @if (!Model.Any())
     {
-        <div class="empty-state"><span class="empty-icon">♙</span><h3>No hay estudiantes todavía</h3><p>Registra el primer estudiante para comenzar a gestionar beneficiarios.</p><a class="btn btn-brand" asp-action="Create">Registrar estudiante</a></div>
+        <div class="empty-state"><span class="empty-icon">♙</span><h3>No hay estudiantes en esta lista</h3><p>Los registros pendientes se revisan en el apartado de registros pendientes.</p><a class="btn btn-brand" asp-action="Create">Registrar estudiante</a></div>
     }
     else
     {

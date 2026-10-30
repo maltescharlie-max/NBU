@@ -561,3 +561,64 @@ GO
 COMMIT;
 GO
 
+BEGIN TRANSACTION;
+GO
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261030021331_RegistrationReviewAndDocuments'
+)
+BEGIN
+    ALTER TABLE [Students] ADD [ReferralCode] nvarchar(20) NULL;
+END;
+GO
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261030021331_RegistrationReviewAndDocuments'
+)
+BEGIN
+    ALTER TABLE [Students] ADD [ReferredByCode] nvarchar(20) NULL;
+END;
+GO
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261030021331_RegistrationReviewAndDocuments'
+)
+BEGIN
+    ALTER TABLE [Students] ADD [RejectionReason] nvarchar(500) NULL;
+END;
+GO
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261030021331_RegistrationReviewAndDocuments'
+)
+BEGIN
+    ALTER TABLE [ScholarshipApplications] ADD [DocumentFileName] nvarchar(300) NULL;
+END;
+GO
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261030021331_RegistrationReviewAndDocuments'
+)
+BEGIN
+    ALTER TABLE [ScholarshipApplications] ADD [DocumentStorageName] nvarchar(260) NULL;
+END;
+GO
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261030021331_RegistrationReviewAndDocuments'
+)
+BEGIN
+    INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+    VALUES (N'20261030021331_RegistrationReviewAndDocuments', N'8.0.33');
+END;
+GO
+
+COMMIT;
+GO
+

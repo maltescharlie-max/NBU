@@ -14,7 +14,7 @@
         <nav class="navbar navbar-expand-lg app-nav">
             <div class="container-xl">
                 <a class="brand-lockup" asp-controller="Home" asp-action="Index" aria-label="NBU, inicio">
-                    <span class="brand-mark" aria-hidden="true"><span>✦</span></span>
+                    <img class="brand-logo" src="~/images/nbu-mark.png" alt="Logo de NBU" />
                     <span class="brand-copy"><strong>NBU</strong><small>Nicaragua Becas Universitarias</small></span>
                 </a>
                 <button class="navbar-toggler nav-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Abrir menú">
@@ -26,6 +26,7 @@
                         {
                             <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index">Panel</a></li>
                             <li class="nav-item"><a class="nav-link" asp-controller="Students" asp-action="Index">Estudiantes</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Students" asp-action="Registrations">Registros pendientes</a></li>
                             <li class="nav-item"><a class="nav-link" asp-controller="Scholarships" asp-action="Index">Becas</a></li>
                             <li class="nav-item"><a class="nav-link" asp-controller="Payments" asp-action="Index">Pagos</a></li>
                             <li class="nav-item"><a class="nav-link" asp-controller="Publications" asp-action="Index">Noticias y eventos</a></li>
@@ -50,7 +51,8 @@
                     }
                     else
                     {
-                        <a class="btn btn-brand btn-sm ms-lg-3" asp-controller="Account" asp-action="Login">Ingresar</a>
+                        <a class="btn btn-outline-primary btn-sm ms-lg-2" asp-controller="Account" asp-action="Register">Registrarse</a>
+                        <a class="btn btn-brand btn-sm ms-lg-2" asp-controller="Account" asp-action="Login">Ingresar</a>
                     }
                 </div>
             </div>

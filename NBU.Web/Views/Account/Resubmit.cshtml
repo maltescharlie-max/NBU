@@ -1,0 +1,11 @@
+@model NBU.Web.Models.ResubmitViewModel
+@{ ViewData["Title"] = "Corregir registro"; }
+<section class="auth-shell"><div class="auth-card"><span class="section-kicker">Actualizar solicitud</span><h1>Corregir registro</h1><p>Escribe el correo y la cédula usados al registrarte, corrige los datos y vuelve a enviarlos.</p>
+<form asp-action="Resubmit" method="post"><div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+<div class="form-field"><label asp-for="Email">Correo usado al registrarte</label><input asp-for="Email" class="form-control"/><span asp-validation-for="Email" class="text-danger"></span></div>
+<div class="form-field"><label asp-for="OriginalNationalId">Cédula usada al registrarte</label><input asp-for="OriginalNationalId" class="form-control"/><span asp-validation-for="OriginalNationalId" class="text-danger"></span></div>
+<div class="form-field"><label asp-for="NationalId">Cédula corregida</label><input asp-for="NationalId" class="form-control"/><span asp-validation-for="NationalId" class="text-danger"></span></div>
+<div class="form-field"><label asp-for="FirstName">Nombres corregidos</label><input asp-for="FirstName" class="form-control"/></div><div class="form-field"><label asp-for="LastName">Apellidos corregidos</label><input asp-for="LastName" class="form-control"/></div>
+<div class="form-field"><label asp-for="Phone">Teléfono</label><input asp-for="Phone" class="form-control"/></div><div class="form-field"><label asp-for="University">Universidad</label><input asp-for="University" class="form-control"/></div><div class="form-field"><label asp-for="Career">Carrera</label><input asp-for="Career" class="form-control"/></div>
+<button class="btn btn-brand w-100" type="submit">Enviar corrección</button></form></div></section>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

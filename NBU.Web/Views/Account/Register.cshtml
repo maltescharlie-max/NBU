@@ -1,0 +1,25 @@
+@model NBU.Web.Models.RegisterViewModel
+@{ ViewData["Title"] = "Crear cuenta"; }
+<section class="auth-shell"><div class="auth-card">
+    <span class="section-kicker">Únete a NBU</span><h1>Crear cuenta estudiantil</h1>
+    <p>Completa tus datos. Administración revisará tu registro antes de activar el acceso.</p>
+    <form asp-action="Register" method="post">
+        <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+        <div class="form-field"><label asp-for="FirstName">Nombres</label><input asp-for="FirstName" class="form-control" autocomplete="given-name"/><span asp-validation-for="FirstName" class="text-danger"></span></div>
+        <div class="form-field"><label asp-for="LastName">Apellidos</label><input asp-for="LastName" class="form-control" autocomplete="family-name"/><span asp-validation-for="LastName" class="text-danger"></span></div>
+        <div class="form-field"><label asp-for="NationalId">Cédula</label><input asp-for="NationalId" class="form-control"/><span asp-validation-for="NationalId" class="text-danger"></span></div>
+        <div class="form-field"><label asp-for="Email">Correo electrónico</label><input asp-for="Email" class="form-control" autocomplete="email"/><span asp-validation-for="Email" class="text-danger"></span></div>
+        <div class="form-field"><label asp-for="Phone">Teléfono</label><input asp-for="Phone" class="form-control" autocomplete="tel"/><span asp-validation-for="Phone" class="text-danger"></span></div>
+        <div class="form-field"><label asp-for="University">Universidad</label><input asp-for="University" class="form-control"/><span asp-validation-for="University" class="text-danger"></span></div>
+        <div class="form-field"><label asp-for="Career">Carrera</label><input asp-for="Career" class="form-control"/><span asp-validation-for="Career" class="text-danger"></span></div>
+        <div class="form-field"><label asp-for="ReferralCode">Código de recomendación (opcional)</label><input asp-for="ReferralCode" class="form-control" placeholder="Ej. NBU123456"/><span asp-validation-for="ReferralCode" class="text-danger"></span></div>
+        <div class="form-field"><label asp-for="Password">Contraseña (8 caracteres o más; solo letras y números)</label><input asp-for="Password" class="form-control" autocomplete="new-password"/><span asp-validation-for="Password" class="text-danger"></span></div>
+        <div class="form-field"><label asp-for="ConfirmPassword">Confirmar contraseña</label><input asp-for="ConfirmPassword" class="form-control" autocomplete="new-password"/><span asp-validation-for="ConfirmPassword" class="text-danger"></span></div>
+        <label class="check-option"><input type="checkbox" data-toggle-passwords/><span>Mostrar contraseñas</span></label>
+        <button type="submit" class="btn btn-brand w-100">Enviar registro</button>
+    </form>
+    <a class="back-link d-inline-block mt-3" asp-action="Login">Ya tengo una cuenta</a>
+</div></section>
+@section Scripts { <partial name="_ValidationScriptsPartial" /><script>
+document.querySelector('[data-toggle-passwords]')?.addEventListener('change', e => document.querySelectorAll('#Password, #ConfirmPassword').forEach(input => input.type = e.target.checked ? 'text' : 'password'));
+</script> }

@@ -9,9 +9,28 @@ namespace NBU.Web.Controllers;
 [Authorize(Roles = NbuRoles.Admin)]
 public class StudentsController(AppDbContext context) : Controller
 {
-    public async Task<IActionResult> Index(string? search)
+    [HttpPost, ValidateAntiForgeryToken]
+    public async Task<IActionResult> Review(int id, string decision, string? reason)
     {
-        var students = context.Students.AsNoTracking();
+        var student = await context.Students.FindAsync(id);
+        if (student is null) return NotFound();
+        if (student.Status != "Pending" || decision is not ("approve" or "reject")) return BadRequest();
+        if (decision == "reject" && string.IsNullOrWhiteSpace(reason))
+        {
+            TempData["Error"] = "Escribe el motivo para que la persona pueda corregir su registro.";
+            return RedirectToAction(nameof(Registrations));
+        }
+        student.Status = decision == "approve" ? "Active" : "Rejected";
+        student.RejectionReason = decision == "approve" ? null : reason!.Trim();
+        await context.SaveChangesAsync();
+        TempData["Success"] = decision == "approve" ? "Registro aprobado; ya puede iniciar sesión." : "Registro rechazado.";
+        return RedirectToAction(nameof(Registrations));
+    }
+
+    public async Task<IActionResult> Index(string? search, string? status)
+    {
+        var students = context.Students.AsNoTracking()
+            .Where(student => student.Status == "Active" || student.Status == "Inactive");
 
         if (!string.IsNullOrWhiteSpace(search))
         {
@@ -23,9 +42,22 @@ public class StudentsController(AppDbContext context) : Controller
                 student.NationalId.Contains(term) ||
                 student.Email.Contains(term));
         }
+        if (status is "Active" or "Inactive") students = students.Where(student => student.Status == status);
 
         ViewData["Search"] = search;
+        ViewData["Status"] = status;
+        ViewData["PendingCount"] = await context.Students.CountAsync(student => student.Status == "Pending");
         return View(await students.OrderBy(student => student.LastName).ThenBy(student => student.FirstName).ToListAsync());
+    }
+
+    public async Task<IActionResult> Registrations()
+    {
+        var pending = await context.Students.AsNoTracking()
+            .Where(student => student.Status == "Pending")
+            .OrderBy(student => student.LastName)
+            .ThenBy(student => student.FirstName)
+            .ToListAsync();
+        return View(pending);
     }
 
     public async Task<IActionResult> Details(int? id)

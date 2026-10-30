@@ -27,6 +27,10 @@ El sitio web usa los roles **Admin** y **Student**. Los módulos administrativos
 
 El personal registra depósitos que ya fueron realizados por fuera del sistema. La opción “Transferencias bancarias” del portal estudiantil aparece deshabilitada y solo como referencia; no se conecta a ningún banco y no mueve dinero.
 
+El registro estudiantil es público desde la web. Solicita nombres, apellidos, cédula, correo, teléfono, carrera, universidad y contraseña; crea la cuenta con estado pendiente hasta que administración apruebe o rechace desde el apartado de registros pendientes, disponible en web y escritorio. Las contraseñas nuevas deben tener al menos 8 letras/números. Las becas permiten adjuntar un respaldo PDF/JPG/PNG de hasta 5 MB. Las solicitudes y registros rechazados muestran el motivo para corregir y reenviar. Cada estudiante activo tiene un código para recomendar a otra persona, con opción para copiarlo desde el portal.
+
+La identidad gráfica de NBU utiliza el logotipo del birrete, la estrella y el libro en el encabezado web, la pantalla de acceso y el menú de escritorio. El ejecutable incluye el archivo `nbu-mark.png` junto a la aplicación.
+
 ## Documentación
 
 - [Ficha técnica y plan del proyecto](docs/PLAN.md)

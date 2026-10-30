@@ -37,12 +37,14 @@ public partial class Form1 : Form
         var availableHeight = Math.Max(520, workingArea.Height - 24);
         MinimumSize = new Size(Math.Min(1000, availableWidth), Math.Min(680, availableHeight));
         Size = new Size(Math.Min(1320, availableWidth), Math.Min(820, availableHeight));
+        WindowState = FormWindowState.Maximized;
         BackColor = Canvas;
         Font = new Font("Segoe UI", 10F);
 
         var sidebar = new Panel { Dock = DockStyle.Fill, BackColor = Navy, Padding = new Padding(17, 22, 17, 16) };
-        var brand = new Label { Text = "NBU", ForeColor = Color.White, Font = new Font("Segoe UI", 24F, FontStyle.Bold), AutoSize = true, Location = new Point(20, 20) };
-        var brandSub = new Label { Text = "NICARAGUA BECAS\nUNIVERSITARIAS", ForeColor = Color.FromArgb(175, 202, 221), Font = new Font("Segoe UI", 8F, FontStyle.Bold), AutoSize = true, Location = new Point(22, 60) };
+        var brandLogo = new PictureBox { Image = NbuBranding.LoadMark(), SizeMode = PictureBoxSizeMode.Zoom, BackColor = Color.Transparent, Location = new Point(18, 19), Size = new Size(54, 54) };
+        var brand = new Label { Text = "NBU", ForeColor = Color.White, Font = new Font("Segoe UI", 22F, FontStyle.Bold), AutoSize = true, Location = new Point(80, 19) };
+        var brandSub = new Label { Text = "NICARAGUA BECAS\nUNIVERSITARIAS", ForeColor = Color.FromArgb(212, 229, 245), Font = new Font("Segoe UI", 7.5F, FontStyle.Bold), AutoSize = true, Location = new Point(82, 51) };
         var divider = new Panel { BackColor = Color.FromArgb(36, 77, 119), Height = 1, Dock = DockStyle.Top, Margin = new Padding(0, 14, 0, 13) };
         _sideMenu.Dock = DockStyle.Top;
         _sideMenu.AutoSize = true;
@@ -53,8 +55,9 @@ public partial class Form1 : Form
 
         AddNavigation("Inicio", () => { ShowDashboard(); return Task.CompletedTask; });
         AddNavigation("Estudiantes", async () => await ShowStudentsAsync());
+        AddNavigation("Registros pendientes", ShowRegistrationRequestsAsync);
         AddNavigation("Becas", () => OpenManager(ModuleForms.Scholarships(_dbOptions)));
-        AddNavigation("Solicitudes", () => OpenManager(ModuleForms.Applications(_dbOptions)));
+        AddNavigation("Solicitudes de beca", () => OpenManager(ModuleForms.Applications(_dbOptions)));
         AddNavigation("Pagos", () => OpenManager(ModuleForms.Payments(_dbOptions)));
         AddNavigation("Noticias y eventos", () => OpenManager(ModuleForms.Publications(_dbOptions)));
         AddNavigation("Notificaciones", () => OpenManager(ModuleForms.Notifications(_dbOptions)));
@@ -65,16 +68,17 @@ public partial class Form1 : Form
         sidebar.Controls.Add(divider);
         sidebar.Controls.Add(brandSub);
         sidebar.Controls.Add(brand);
+        sidebar.Controls.Add(brandLogo);
 
         var header = new Panel { Dock = DockStyle.Fill, BackColor = Color.White, Padding = new Padding(30, 15, 30, 12), Margin = Padding.Empty };
         _pageTitle.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
         _pageTitle.ForeColor = Navy;
         _pageTitle.AutoSize = true;
-        _pageTitle.Location = new Point(29, 12);
+        _pageTitle.Location = new Point(29, 7);
         _pageSubtitle.Font = new Font("Segoe UI", 9F);
         _pageSubtitle.ForeColor = Muted;
         _pageSubtitle.AutoSize = true;
-        _pageSubtitle.Location = new Point(31, 48);
+        _pageSubtitle.Location = new Point(31, 53);
         header.Controls.Add(_pageTitle);
         header.Controls.Add(_pageSubtitle);
         _content.Dock = DockStyle.Fill;
@@ -84,7 +88,7 @@ public partial class Form1 : Form
         _content.Padding = Padding.Empty;
         _content.BackColor = Canvas;
         _content.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
-        _content.RowStyles.Add(new RowStyle(SizeType.Absolute, 83));
+        _content.RowStyles.Add(new RowStyle(SizeType.Absolute, 92));
         _content.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
         _pageBody.Dock = DockStyle.Fill;
         _pageBody.Padding = new Padding(30, 26, 30, 30);
@@ -120,7 +124,11 @@ public partial class Form1 : Form
         };
         button.FlatAppearance.BorderSize = 0;
         button.FlatAppearance.MouseOverBackColor = Color.FromArgb(21, 67, 111);
-        button.Click += async (_, _) => await action();
+        button.Click += async (_, _) =>
+        {
+            SetActiveNavigation(_navigationButtons.IndexOf(button));
+            await action();
+        };
         _sideMenu.Controls.Add(button);
         _navigationButtons.Add(button);
     }
@@ -141,29 +149,43 @@ public partial class Form1 : Form
         SetActiveNavigation(0);
         _pageTitle.Text = "Bienvenido al panel NBU";
         _pageSubtitle.Text = "Tu esfuerzo abre oportunidades · Administración universitaria";
-        _pageBody.Controls.Clear();
-        var panel = MakeCard(new Rectangle(30, 30, Math.Max(360, _pageBody.ClientSize.Width - 60), 230));
+        ClearPageBody();
+        var panel = MakeCard(new Rectangle(30, 30, Math.Max(360, _pageBody.ClientSize.Width - 60), 250));
         panel.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
         panel.BackColor = Color.FromArgb(11, 55, 99);
-        var title = new Label { Text = "Acompañamos el\ntalento universitario.", ForeColor = Color.White, Font = new Font("Segoe UI", 24F, FontStyle.Bold), AutoSize = true, Location = new Point(28, 29) };
-        var subtitle = new Label { Text = "Gestiona becas, beneficiarios y avisos desde un mismo espacio.", ForeColor = Color.FromArgb(202, 224, 239), Font = new Font("Segoe UI", 10F), AutoSize = false, Size = new Size(Math.Max(220, panel.Width - 62), 42), Location = new Point(31, 104), Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right };
+        var title = new Label { Text = "Tu esfuerzo abre\noportunidades.", ForeColor = Color.White, Font = new Font("Segoe UI", 25F, FontStyle.Bold), AutoSize = false, Location = new Point(28, 23), Height = 78, TextAlign = ContentAlignment.MiddleLeft };
+        var subtitle = new Label { Text = "Consulta becas, solicitudes, noticias y eventos en un solo lugar.", ForeColor = Color.FromArgb(242, 248, 255), Font = new Font("Segoe UI", 10F), AutoSize = false, Location = new Point(31, 111), Height = 46, TextAlign = ContentAlignment.TopLeft };
         var action = MakeButton("Abrir estudiantes  →", true);
-        action.Location = new Point(30, 157);
+        action.Location = new Point(30, 179);
+        action.Size = new Size(205, 42);
         action.Click += async (_, _) => await ShowStudentsAsync();
-        var accent = new Label { Text = "✦", ForeColor = Color.FromArgb(255, 194, 63), Font = new Font("Segoe UI", 68F, FontStyle.Bold), AutoSize = true, Location = new Point(Math.Max(220, panel.Width - 145), 45), Anchor = AnchorStyles.Top | AnchorStyles.Right };
+        var heroLogo = new PictureBox { Image = NbuBranding.LoadMark(), SizeMode = PictureBoxSizeMode.Zoom, BackColor = Color.Transparent, Anchor = AnchorStyles.Top | AnchorStyles.Right };
+        void LayoutHero()
+        {
+            var showLogo = panel.ClientSize.Width >= 540;
+            heroLogo.Visible = showLogo;
+            heroLogo.Size = new Size(showLogo ? 150 : 0, showLogo ? 150 : 0);
+            if (showLogo) heroLogo.Location = new Point(panel.ClientSize.Width - 184, 42);
+            var textWidth = Math.Max(240, panel.ClientSize.Width - (showLogo ? 225 : 58));
+            title.Width = textWidth;
+            subtitle.Width = textWidth;
+            title.Font = new Font("Segoe UI", panel.ClientSize.Width < 620 ? 22F : 25F, FontStyle.Bold);
+        }
+        panel.SizeChanged += (_, _) => LayoutHero();
+        LayoutHero();
         panel.Controls.Add(title);
         panel.Controls.Add(subtitle);
         panel.Controls.Add(action);
-        panel.Controls.Add(accent);
+        panel.Controls.Add(heroLogo);
         _pageBody.Controls.Add(panel);
 
-        var section = new Label { Text = "MÓDULOS DEL SISTEMA", ForeColor = Color.FromArgb(21, 153, 164), Font = new Font("Segoe UI", 8.5F, FontStyle.Bold), AutoSize = true, Location = new Point(32, 292) };
+        var section = new Label { Text = "MÓDULOS DEL SISTEMA", ForeColor = Color.FromArgb(21, 153, 164), Font = new Font("Segoe UI", 8.5F, FontStyle.Bold), AutoSize = true, Location = new Point(32, 312) };
         _pageBody.Controls.Add(section);
         var twoColumns = _pageBody.ClientSize.Width >= 620;
         var secondColumn = twoColumns ? 322 : 30;
-        var thirdRow = twoColumns ? 495 : 670;
-        AddDashboardCard("Estudiantes", "Registra y actualiza expedientes.", 30, 320, () => ShowStudentsAsync());
-        AddDashboardCard("Becas y solicitudes", "Convocatorias y decisiones.", secondColumn, 320, () => OpenManager(ModuleForms.Scholarships(_dbOptions)));
+        var thirdRow = twoColumns ? 515 : 690;
+        AddDashboardCard("Estudiantes", "Registra y actualiza expedientes.", 30, 340, () => ShowStudentsAsync());
+        AddDashboardCard("Becas y solicitudes", "Convocatorias y decisiones.", secondColumn, 340, () => OpenManager(ModuleForms.Scholarships(_dbOptions)));
         AddDashboardCard("Pagos", "Registro de depósitos.", 30, thirdRow, () => OpenManager(ModuleForms.Payments(_dbOptions)));
         AddDashboardCard("Noticias y eventos", "Avisos para la comunidad.", secondColumn, thirdRow, () => OpenManager(ModuleForms.Publications(_dbOptions)));
     }
@@ -172,7 +194,7 @@ public partial class Form1 : Form
     {
         var card = MakeCard(new Rectangle(x, y, 270, 155));
         var heading = new Label { Text = title, ForeColor = Navy, Font = new Font("Segoe UI", 12F, FontStyle.Bold), AutoSize = true, Location = new Point(18, 19) };
-        var body = new Label { Text = description, ForeColor = Muted, Font = new Font("Segoe UI", 9F), AutoSize = false, Size = new Size(220, 40), Location = new Point(19, 53) };
+        var body = new Label { Text = description, ForeColor = Muted, Font = new Font("Segoe UI", 9F), AutoSize = false, Size = new Size(225, 45), Location = new Point(19, 52), TextAlign = ContentAlignment.TopLeft };
         var open = new LinkLabel { Text = "Abrir módulo  →", LinkColor = Color.FromArgb(17, 143, 151), Font = new Font("Segoe UI", 9F, FontStyle.Bold), AutoSize = true, Location = new Point(19, 111) };
         open.LinkClicked += async (_, _) => await action();
         card.Controls.Add(heading);
@@ -186,7 +208,7 @@ public partial class Form1 : Form
         SetActiveNavigation(1);
         _pageTitle.Text = "Estudiantes";
         _pageSubtitle.Text = "Directorio de estudiantes y beneficiarios";
-        _pageBody.Controls.Clear();
+        ClearPageBody();
 
         var tools = new Panel { Dock = DockStyle.Top, Height = 60, BackColor = Canvas };
         var add = MakeButton("＋  Nuevo estudiante", true);
@@ -254,7 +276,7 @@ public partial class Form1 : Form
             try
             {
                 await using var db = new AppDbContext(_dbOptions);
-                var query = db.Students.AsNoTracking();
+                var query = db.Students.AsNoTracking().Where(item => item.Status == "Active" || item.Status == "Inactive");
                 if (!string.IsNullOrWhiteSpace(term))
                 {
                     var value = term.Trim();
@@ -334,10 +356,40 @@ public partial class Form1 : Form
         grid.CellDoubleClick += async (_, _) => await EditStudentAsync();
     }
 
+    private Task ShowRegistrationRequestsAsync()
+    {
+        _pageTitle.Text = "Registros pendientes";
+        _pageSubtitle.Text = "Revisa las solicitudes enviadas desde el portal estudiantil";
+        ReplacePageContent(new StudentRegistrationsForm(_dbOptions));
+        return Task.CompletedTask;
+    }
+
     private Task OpenManager<T, TRow>(DesktopCrudManager<T, TRow> manager) where T : class, new() where TRow : class
     {
-        using (manager) manager.ShowDialog(this);
+        var navigationLabel = manager.PageTitle == "Solicitudes" ? "Solicitudes de beca" : manager.PageTitle;
+        var navigationIndex = _navigationButtons.FindIndex(button => button.Text.Trim() == navigationLabel);
+        if (navigationIndex >= 0) SetActiveNavigation(navigationIndex);
+        _pageTitle.Text = manager.PageTitle;
+        _pageSubtitle.Text = manager.PageSubtitle;
+        ReplacePageContent(manager);
         return Task.CompletedTask;
+    }
+
+    private void ReplacePageContent(Control content)
+    {
+        ClearPageBody();
+        content.Dock = DockStyle.Fill;
+        content.Margin = Padding.Empty;
+        _pageBody.Controls.Add(content);
+    }
+
+    private void ClearPageBody()
+    {
+        foreach (Control control in _pageBody.Controls.Cast<Control>().ToArray())
+        {
+            _pageBody.Controls.Remove(control);
+            control.Dispose();
+        }
     }
 
     private static Panel MakeCard(Rectangle bounds) => new() { Bounds = bounds, BackColor = Color.White, BorderStyle = BorderStyle.FixedSingle };

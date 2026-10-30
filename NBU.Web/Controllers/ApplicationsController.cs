@@ -7,8 +7,16 @@ using NBU.Data.Models;
 namespace NBU.Web.Controllers;
 
 [Authorize(Roles = NbuRoles.Admin)]
-public class ApplicationsController(AppDbContext context) : Controller
+public class ApplicationsController(AppDbContext context, IWebHostEnvironment environment) : Controller
 {
+    public async Task<IActionResult> Document(int id)
+    {
+        var application = await context.ScholarshipApplications.AsNoTracking().FirstOrDefaultAsync(item => item.Id == id);
+        if (application?.DocumentStorageName is null) return NotFound();
+        var path = Path.Combine(environment.ContentRootPath, "App_Data", "ScholarshipDocuments", application.DocumentStorageName);
+        if (!System.IO.File.Exists(path)) return NotFound();
+        return PhysicalFile(path, "application/octet-stream", application.DocumentFileName ?? "documento");
+    }
     public async Task<IActionResult> Index(string? status)
     {
         var applications = context.ScholarshipApplications.AsNoTracking()

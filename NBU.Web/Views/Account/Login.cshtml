@@ -8,12 +8,15 @@
         <form asp-action="Login" method="post">
             <input asp-for="ReturnUrl" type="hidden" />
             <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+        @if (ViewBag.RejectionReason is string rejectionReason) { <p class="alert alert-warning">Motivo indicado por administración: @rejectionReason</p> }
             <div class="form-field"><label asp-for="Email"></label><input asp-for="Email" class="form-control" autocomplete="username" /><span asp-validation-for="Email" class="text-danger"></span></div>
             <div class="form-field"><label asp-for="Password"></label><input asp-for="Password" class="form-control" autocomplete="current-password" /><span asp-validation-for="Password" class="text-danger"></span></div>
             <label class="check-option"><input asp-for="RememberMe" /><span>@Html.DisplayNameFor(model => model.RememberMe)</span></label>
             <button type="submit" class="btn btn-brand w-100">Ingresar</button>
         </form>
-        <a class="back-link d-inline-block mt-3" asp-controller="Home" asp-action="Index">← Volver al inicio</a>
+        <a class="back-link d-inline-block mt-3" asp-action="Register">¿Aún no tienes cuenta? Regístrate</a><br />
+        <a class="back-link d-inline-block mt-2" asp-action="Resubmit">¿Te rechazaron el registro? Corrige tus datos</a><br />
+        <a class="back-link d-inline-block mt-2" asp-controller="Home" asp-action="Index">← Volver al inicio</a>
     </div>
 </section>
 @section Scripts { <partial name="_ValidationScriptsPartial" /> }

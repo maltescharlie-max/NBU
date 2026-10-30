@@ -12,7 +12,7 @@ internal sealed record EditorField(string PropertyName, string Label, EditorKind
     IReadOnlyList<EditorChoice>? Choices = null, bool Optional = false);
 internal sealed record DisplayColumn(string PropertyName, string Label, int Width = 100);
 
-internal sealed class DesktopCrudManager<T, TRow> : Form where T : class, new() where TRow : class
+internal sealed class DesktopCrudManager<T, TRow> : UserControl where T : class, new() where TRow : class
 {
     private static readonly Color Navy = Color.FromArgb(9, 39, 84);
     private static readonly Color Muted = Color.FromArgb(114, 129, 152);
@@ -20,6 +20,7 @@ internal sealed class DesktopCrudManager<T, TRow> : Form where T : class, new() 
     private static readonly Color Canvas = Color.FromArgb(245, 248, 252);
     private readonly DbContextOptions<AppDbContext> _options;
     private readonly string _title;
+    private readonly string _subtitle;
     private readonly Func<AppDbContext, Task<List<T>>> _load;
     private readonly Func<T, TRow> _toRow;
     private readonly Func<AppDbContext, T, Task<IReadOnlyList<EditorField>>> _fields;
@@ -30,6 +31,9 @@ internal sealed class DesktopCrudManager<T, TRow> : Form where T : class, new() 
     private readonly DataGridView _grid = new();
     private readonly TextBox _search = new();
     private List<T> _items = [];
+
+    public string PageTitle => _title;
+    public string PageSubtitle => _subtitle;
 
     public DesktopCrudManager(DbContextOptions<AppDbContext> options, string title, string subtitle,
         IReadOnlyList<DisplayColumn> columns,
@@ -43,6 +47,7 @@ internal sealed class DesktopCrudManager<T, TRow> : Form where T : class, new() 
     {
         _options = options;
         _title = title;
+        _subtitle = subtitle;
         _load = load;
         _toRow = toRow;
         _fields = fields;
@@ -51,45 +56,39 @@ internal sealed class DesktopCrudManager<T, TRow> : Form where T : class, new() 
         _searchText = searchText;
         _columns = columns;
         DeletePrompt = deletePrompt ?? $"¿Eliminar el registro seleccionado de {title}?";
-        Text = $"{title} · NBU";
-        StartPosition = FormStartPosition.CenterParent;
-        var workingArea = Screen.FromPoint(Cursor.Position).WorkingArea;
-        var availableWidth = Math.Max(800, workingArea.Width - 32);
-        var availableHeight = Math.Max(500, workingArea.Height - 32);
-        MinimumSize = new Size(Math.Min(930, availableWidth), Math.Min(630, availableHeight));
-        Size = new Size(Math.Min(1120, availableWidth), Math.Min(720, availableHeight));
+        Dock = DockStyle.Fill;
         BackColor = Canvas;
         Font = new Font("Segoe UI", 9.5F);
 
-        var heading = new Label { Text = title, ForeColor = Navy, Font = new Font("Segoe UI", 21F, FontStyle.Bold), AutoSize = true, Location = new Point(29, 20) };
-        var caption = new Label { Text = subtitle, ForeColor = Muted, Font = new Font("Segoe UI", 9F), AutoSize = true, Location = new Point(32, 58) };
-        var toolbar = new Panel { Dock = DockStyle.Fill, BackColor = Canvas, Margin = Padding.Empty };
-        toolbar.Controls.Add(heading);
-        toolbar.Controls.Add(caption);
-        _search.Location = new Point(30, 92);
+        var toolbar = new TableLayoutPanel { Dock = DockStyle.Top, Height = 52, ColumnCount = 2, RowCount = 1, BackColor = Canvas, Margin = Padding.Empty, Padding = Padding.Empty };
+        toolbar.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
+        toolbar.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
+        toolbar.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
+        var searchTools = new FlowLayoutPanel { Dock = DockStyle.Fill, FlowDirection = FlowDirection.LeftToRight, WrapContents = false, Margin = Padding.Empty, Padding = Padding.Empty, BackColor = Canvas };
+        _search.Margin = new Padding(0, 5, 8, 0);
         _search.Size = new Size(270, 35);
         _search.PlaceholderText = "Buscar…";
         _search.Font = new Font("Segoe UI", 9.5F);
         var searchButton = MakeButton("Buscar", false);
-        searchButton.Location = new Point(309, 89);
-        searchButton.Size = new Size(94, 36);
+        searchButton.Margin = new Padding(0, 3, 0, 0);
+        searchButton.Size = new Size(94, 38);
         var addButton = MakeButton("＋ Nuevo", true);
-        addButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-        addButton.Location = new Point(Width - 385, 89);
+        addButton.Margin = new Padding(0, 3, 8, 0);
         addButton.Size = new Size(112, 38);
         var editButton = MakeButton("Editar", false);
-        editButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-        editButton.Location = new Point(Width - 263, 89);
+        editButton.Margin = new Padding(0, 3, 8, 0);
         editButton.Size = new Size(94, 38);
         var deleteButton = MakeButton("Eliminar", false);
-        deleteButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-        deleteButton.Location = new Point(Width - 160, 89);
+        deleteButton.Margin = new Padding(0, 3, 0, 0);
         deleteButton.Size = new Size(105, 38);
-        toolbar.Controls.Add(_search);
-        toolbar.Controls.Add(searchButton);
-        toolbar.Controls.Add(addButton);
-        toolbar.Controls.Add(editButton);
-        toolbar.Controls.Add(deleteButton);
+        searchTools.Controls.Add(_search);
+        searchTools.Controls.Add(searchButton);
+        var recordTools = new FlowLayoutPanel { Dock = DockStyle.Fill, FlowDirection = FlowDirection.RightToLeft, WrapContents = false, Margin = Padding.Empty, Padding = Padding.Empty, BackColor = Canvas };
+        recordTools.Controls.Add(deleteButton);
+        recordTools.Controls.Add(editButton);
+        recordTools.Controls.Add(addButton);
+        toolbar.Controls.Add(searchTools, 0, 0);
+        toolbar.Controls.Add(recordTools, 1, 0);
 
         _grid.Dock = DockStyle.Fill;
         _grid.BackgroundColor = Color.White;
@@ -115,13 +114,10 @@ internal sealed class DesktopCrudManager<T, TRow> : Form where T : class, new() 
 
         var card = new Panel { Dock = DockStyle.Fill, Padding = new Padding(12), BackColor = Color.White, BorderStyle = BorderStyle.FixedSingle, Margin = Padding.Empty };
         card.Controls.Add(_grid);
-        var layout = new TableLayoutPanel { Dock = DockStyle.Fill, ColumnCount = 1, RowCount = 2, Margin = Padding.Empty, Padding = Padding.Empty, BackColor = Canvas };
-        layout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
-        layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 130));
-        layout.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
-        layout.Controls.Add(toolbar, 0, 0);
-        layout.Controls.Add(card, 0, 1);
-        Controls.Add(layout);
+        var body = new Panel { Dock = DockStyle.Fill, BackColor = Canvas, Padding = new Padding(0, 0, 0, 0) };
+        body.Controls.Add(card);
+        Controls.Add(body);
+        Controls.Add(toolbar);
 
         searchButton.Click += async (_, _) => await LoadRowsAsync();
         _search.KeyDown += async (_, e) => { if (e.KeyCode == Keys.Enter) { e.SuppressKeyPress = true; await LoadRowsAsync(); } };
@@ -129,7 +125,7 @@ internal sealed class DesktopCrudManager<T, TRow> : Form where T : class, new() 
         editButton.Click += async (_, _) => await EditRecordAsync(SelectedRecord());
         _grid.CellDoubleClick += async (_, _) => await EditRecordAsync(SelectedRecord());
         deleteButton.Click += async (_, _) => await DeleteRecordAsync();
-        Shown += async (_, _) => await LoadRowsAsync();
+        Load += async (_, _) => await LoadRowsAsync();
     }
 
     private string DeletePrompt { get; }

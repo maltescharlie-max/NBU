@@ -18,6 +18,8 @@ public sealed class ScholarshipApplication
     [StringLength(1000)]
     [Display(Name = "Observaciones")]
     public string? Observations { get; set; }
+    [StringLength(300)] public string? DocumentFileName { get; set; }
+    [StringLength(260)] public string? DocumentStorageName { get; set; }
 
     public Student Student { get; set; } = null!;
     public Scholarship Scholarship { get; set; } = null!;

@@ -28,6 +28,7 @@ public sealed class AdminLoginForm : Form
 
         var card = new Panel { Location = new Point(34, 25), Size = new Size(452, 450), BackColor = Color.White, Padding = new Padding(25) };
         var brand = new Label { Text = "NBU", Location = new Point(32, 22), AutoSize = true, ForeColor = Color.FromArgb(9, 39, 84), Font = new Font("Segoe UI", 25F, FontStyle.Bold) };
+        var logo = new PictureBox { Image = NbuBranding.LoadMark(), SizeMode = PictureBoxSizeMode.Zoom, BackColor = Color.Transparent, Location = new Point(361, 19), Size = new Size(60, 60) };
         var title = new Label { Text = "Acceso del personal", Location = new Point(32, 79), AutoSize = true, ForeColor = Color.FromArgb(24, 43, 67), Font = new Font("Segoe UI", 14F, FontStyle.Bold) };
         var subtitle = new Label { Text = "Inicia sesión con una cuenta administrativa NBU.", Location = new Point(32, 112), Size = new Size(388, 32), ForeColor = Color.FromArgb(114, 129, 152), Font = new Font("Segoe UI", 9F) };
         var emailLabel = new Label { Text = "Correo electrónico", Location = new Point(32, 159), AutoSize = true, ForeColor = Color.FromArgb(60, 80, 102), Font = new Font("Segoe UI", 9F, FontStyle.Bold) };
@@ -66,7 +67,7 @@ public sealed class AdminLoginForm : Form
             TextAlign = ContentAlignment.MiddleCenter
         };
 
-        card.Controls.AddRange([brand, title, subtitle, emailLabel, _email, passwordLabel, _password, _message, _submit, privacyNote]);
+        card.Controls.AddRange([brand, logo, title, subtitle, emailLabel, _email, passwordLabel, _password, _message, _submit, privacyNote]);
         Controls.Add(card);
     }
 

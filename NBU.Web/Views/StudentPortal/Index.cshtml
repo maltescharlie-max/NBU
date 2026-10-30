@@ -4,6 +4,7 @@
     <div><span class="section-kicker">Mi espacio NBU</span><h1>Hola, @Model.Student.FirstName</h1><p>Este es el resumen de tus becas y avisos universitarios.</p></div>
     <span class="student-status"><i></i> @Model.Student.University</span>
 </section>
+@if (!string.IsNullOrWhiteSpace(Model.Student.ReferralCode)) { <section class="data-panel mb-4"><h2>Invita a un amigo</h2><p>Comparte este código para que lo escriba al registrarse:</p><div class="referral-share"><strong class="code-pill" id="referralCode">@Model.Student.ReferralCode</strong><button class="btn btn-outline-primary btn-sm" type="button" data-copy-value="@Model.Student.ReferralCode" data-copy-feedback="referralCopyFeedback">Copiar código</button><span class="copy-feedback" id="referralCopyFeedback" aria-live="polite"></span></div></section> }
 <section class="student-stat-grid">
     <article class="student-stat"><span>Convocatorias abiertas</span><strong>@Model.OpenScholarships</strong><a asp-action="Scholarships">Ver becas →</a></article>
     <article class="student-stat"><span>Solicitudes en revisión</span><strong>@Model.PendingApplications</strong><a asp-action="Applications">Consultar estado →</a></article>

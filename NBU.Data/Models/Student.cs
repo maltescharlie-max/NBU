@@ -32,6 +32,9 @@ public sealed class Student
     [Required, StringLength(30)]
     [Display(Name = "Estado")]
     public string Status { get; set; } = "Active";
+    [StringLength(500)] public string? RejectionReason { get; set; }
+    [StringLength(20)] public string? ReferralCode { get; set; }
+    [StringLength(20)] public string? ReferredByCode { get; set; }
 
     [System.ComponentModel.DataAnnotations.Schema.NotMapped]
     public string FullName => $"{FirstName} {LastName} ({StudentCode})";

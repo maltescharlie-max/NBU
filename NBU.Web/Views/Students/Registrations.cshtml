@@ -1,0 +1,54 @@
+@model IEnumerable<NBU.Data.Models.Student>
+@{
+    ViewData["Title"] = "Registros pendientes";
+}
+
+<section class="page-heading">
+    <div><span class="section-kicker">Revisión de acceso</span><h1>Registros pendientes</h1><p>Las personas que se registran desde la página esperan aquí hasta que el personal revise sus datos.</p></div>
+    <a class="btn btn-outline-primary" asp-action="Index">Volver a estudiantes</a>
+</section>
+
+<section class="data-panel">
+    <div class="data-toolbar">
+        <div><h2>Solicitudes de registro</h2><p>@Model.Count() registro(s) por revisar. Al aceptar, la persona podrá ingresar al portal.</p></div>
+    </div>
+    @if (!Model.Any())
+    {
+        <div class="empty-state"><span class="empty-icon">✓</span><h3>No hay registros pendientes</h3><p>Cuando alguien envíe el formulario de registro, aparecerá aquí para revisión.</p></div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table student-table align-middle">
+                <thead><tr><th>Persona</th><th>Cédula</th><th>Teléfono</th><th>Carrera</th><th>Universidad</th><th class="text-end">Decisión</th></tr></thead>
+                <tbody>
+                @foreach (var student in Model)
+                {
+                    <tr>
+                        <td><div class="student-cell"><span class="avatar-bubble">@student.FirstName[..1]@student.LastName[..1]</span><span><strong>@student.FirstName @student.LastName</strong><small>@student.Email</small></span></div></td>
+                        <td>@student.NationalId</td>
+                        <td>@(student.Phone ?? "—")</td>
+                        <td>@student.Career</td>
+                        <td>@student.University</td>
+                        <td>
+                            <div class="d-flex flex-column flex-xl-row justify-content-end gap-2">
+                                <form asp-action="Review" method="post">
+                                    <input type="hidden" name="id" value="@student.Id" />
+                                    <input type="hidden" name="decision" value="approve" />
+                                    <button class="btn btn-sm btn-success" type="submit">Aceptar</button>
+                                </form>
+                                <form asp-action="Review" method="post" class="d-flex gap-1">
+                                    <input type="hidden" name="id" value="@student.Id" />
+                                    <input type="hidden" name="decision" value="reject" />
+                                    <input name="reason" class="form-control form-control-sm" maxlength="500" required placeholder="Motivo del rechazo" aria-label="Motivo del rechazo para @student.FullName" />
+                                    <button class="btn btn-sm btn-outline-danger" type="submit">Rechazar</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    }
+</section>

@@ -91,6 +91,7 @@ artifacts/
 
 # Local self-contained Windows publish output (too large for GitHub source history)
 /entregables/escritorio/
+/entregables/escritorio-actualizado/
 
 # ASP.NET Scaffolding
 ScaffoldingReadMe.txt

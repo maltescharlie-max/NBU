@@ -9,12 +9,19 @@ using NBU.Web.Models;
 namespace NBU.Web.Controllers;
 
 [Authorize(Roles = NbuRoles.Student)]
-public sealed class StudentPortalController(AppDbContext context, UserManager<NbuUser> userManager) : Controller
+public sealed class StudentPortalController(AppDbContext context, UserManager<NbuUser> userManager, IWebHostEnvironment environment) : Controller
 {
     public async Task<IActionResult> Index()
     {
         var student = await CurrentStudentAsync();
         if (student is null) return Forbid();
+        if (string.IsNullOrWhiteSpace(student.ReferralCode))
+        {
+            var trackedStudent = await context.Students.FirstAsync(item => item.Id == student.Id);
+            trackedStudent.ReferralCode = $"NBU{Guid.NewGuid():N}"[..10].ToUpperInvariant();
+            await context.SaveChangesAsync();
+            student.ReferralCode = trackedStudent.ReferralCode;
+        }
 
         var today = DateOnly.FromDateTime(DateTime.Today);
         var applications = await context.ScholarshipApplications.AsNoTracking()
@@ -60,7 +67,7 @@ public sealed class StudentPortalController(AppDbContext context, UserManager<Nb
     }
 
     [HttpPost, ValidateAntiForgeryToken]
-    public async Task<IActionResult> Apply(int scholarshipId)
+    public async Task<IActionResult> Apply(int scholarshipId, IFormFile? document)
     {
         var student = await CurrentStudentAsync();
         if (student is null) return Forbid();
@@ -81,16 +88,46 @@ public sealed class StudentPortalController(AppDbContext context, UserManager<Nb
             return RedirectToAction(nameof(Scholarships));
         }
 
+        string? storageName = null;
+        string? originalName = null;
+        if (document is { Length: > 0 })
+        {
+            var extension = Path.GetExtension(document.FileName).ToLowerInvariant();
+            if (document.Length > 5 * 1024 * 1024 || extension is not (".pdf" or ".png" or ".jpg" or ".jpeg"))
+            {
+                TempData["Error"] = "Adjunta un PDF, JPG o PNG de hasta 5 MB.";
+                return RedirectToAction(nameof(Scholarships));
+            }
+            storageName = $"{Guid.NewGuid():N}{extension}";
+            originalName = Path.GetFileName(document.FileName);
+            var folder = Path.Combine(environment.ContentRootPath, "App_Data", "ScholarshipDocuments");
+            Directory.CreateDirectory(folder);
+            await using var stream = System.IO.File.Create(Path.Combine(folder, storageName));
+            await document.CopyToAsync(stream);
+        }
+
         context.ScholarshipApplications.Add(new ScholarshipApplication
         {
             StudentId = student.Id,
             ScholarshipId = scholarshipId,
             SubmittedAt = DateTime.UtcNow,
-            Status = "Pending"
+            Status = "Pending", DocumentStorageName = storageName, DocumentFileName = originalName
         });
         await context.SaveChangesAsync();
         TempData["Success"] = "Tu solicitud quedó registrada para revisión.";
         return RedirectToAction(nameof(Applications));
+    }
+
+    public async Task<IActionResult> Document(int id)
+    {
+        var student = await CurrentStudentAsync();
+        if (student is null) return Forbid();
+        var application = await context.ScholarshipApplications.AsNoTracking()
+            .FirstOrDefaultAsync(item => item.Id == id && item.StudentId == student.Id);
+        if (application?.DocumentStorageName is null) return NotFound();
+        var path = Path.Combine(environment.ContentRootPath, "App_Data", "ScholarshipDocuments", application.DocumentStorageName);
+        if (!System.IO.File.Exists(path)) return NotFound();
+        return PhysicalFile(path, "application/octet-stream", application.DocumentFileName ?? "documento");
     }
 
     public async Task<IActionResult> Applications()

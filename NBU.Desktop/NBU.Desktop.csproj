@@ -8,6 +8,10 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\nbu-mark.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>nbu-mark.png</TargetPath>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
