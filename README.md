@@ -4,6 +4,9 @@
 
 Plataforma académica para gestionar becas universitarias y mantener informados a los estudiantes. Incluye una aplicación web adaptable a celulares y una aplicación Windows Forms para el personal.
 
+**Grupo:** INS-1111 · **Docente:** Ing. Carlos Gaitán
+**Integrantes:** Carlos Jose Maltes Martinez, Verno Jose Chaves Lopez, Dereck Sahid Davila Duarte e Ismael Exequiel Noguera Arias.
+
 ## Módulos
 
 1. **Estudiantes:** datos y estado de estudiantes beneficiarios.
@@ -42,8 +45,11 @@ La identidad gráfica de NBU utiliza el logotipo del birrete, la estrella y el l
 - [Manual de usuario](entregables/Manual-de-Usuario-NBU.docx)
 - [Manual de usuario en PDF](entregables/Manual-de-Usuario-NBU.pdf)
 - [Presentación](entregables/Presentacion-NBU.pptx)
+- [Capturas de demostración](entregables/evidencias/)
 
 ## Ejecutar localmente
+
+Para que otros dispositivos del mismo Wi-Fi abran la web, inicia el servidor escuchando en http://0.0.0.0:5221. Desde el otro dispositivo abre http://IP-DE-LA-COMPUTADORA:5221 y reemplaza IP-DE-LA-COMPUTADORA por la IPv4 que muestra ipconfig. El servidor y SQL Server deben permanecer encendidos. localhost solo sirve dentro del dispositivo que ejecuta el servidor; el proyecto no está publicado en internet.
 
 Se requiere el SDK de .NET 8 y SQL Server Express o LocalDB. La configuración incluida apunta a la instancia `SQLEXPRESS22`; si tu instancia tiene otro nombre, actualiza `NBU.Web/appsettings.json` y `NBU.Desktop/appsettings.json`. Windows Forms también lee la variable de entorno `NBU_SQL_CONNECTION`.
 

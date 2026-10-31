@@ -85,7 +85,7 @@ Cada integrante debe trabajar en una rama propia, realizar cambios pequeños y a
 
 - **Proyecto:** NBU — Nicaragua Becas Universitarias
 - **Grupo:** INS-1111
-- **Integrantes:** Carlos Jose Maltes Martinez, Verno Jose Chaves Lopez y Dereck Sahid Davila Duarte.
+- **Integrantes:** Carlos Jose Maltes Martinez, Verno Jose Chaves Lopez, Dereck Sahid Davila Duarte e Ismael Exequiel Noguera Arias.
 - **Docente:** Ing. Carlos Gaitán.
 - **Fecha de inicio registrada:** 28/10/2026.
 - **Fecha de entrega:** por definir.
