@@ -45,6 +45,8 @@ La identidad gráfica de NBU utiliza el logotipo del birrete, la estrella y el l
 - [Manual de usuario](entregables/Manual-de-Usuario-NBU.docx)
 - [Manual de usuario en PDF](entregables/Manual-de-Usuario-NBU.pdf)
 - [Presentación](entregables/Presentacion-NBU.pptx)
+- [Guía y guion para la exposición (Word)](entregables/Guion-Exposicion-NBU.docx)
+- [Guía y guion para la exposición (PDF)](entregables/Guion-Exposicion-NBU.pdf)
 - [Capturas de demostración](entregables/evidencias/)
 
 ## Ejecutar localmente
